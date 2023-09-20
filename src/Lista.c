@@ -38,8 +38,35 @@ Carta getCarta(Lista *lista, int posicao) {
     return celulaAtual->carta;
 };
 void addCartaAoTopo(Lista *lista, Carta *carta) {
-    lista->ultima->proxima = (Celula *) malloc(sizeof(Celula));
-    lista->ultima = lista->ultima->proxima;
-    lista->ultima->carta = *carta;
-    lista->ultima->proxima = NULL;
+    if(verificarListaVAZIA(lista)){
+        lista->ultima = (Celula*) malloc(sizeof(Celula));
+        lista->primeira = lista->ultima;
+    }else{
+        lista->ultima->proxima = (Celula *) malloc(sizeof(Celula));
+        lista->ultima = lista->ultima->proxima;
+        lista->ultima->carta = *carta;
+        lista->ultima->proxima = NULL;
+    }
 };
+
+int retirarCartaDoTopo(Lista *lista, Carta *carta) {
+    Celula *ultimaCelula = lista->primeira->proxima;
+    Celula *penultimaCelula = lista->primeira;
+
+    if(verificarListaVAZIA(lista)) {
+        return 0;
+    }
+    *carta = lista->ultima->carta;
+
+    while(ultimaCelula->proxima != NULL) {
+        penultimaCelula = ultimaCelula;
+        ultimaCelula = ultimaCelula->proxima;
+    }
+
+    penultimaCelula->proxima = NULL;
+    lista->ultima = penultimaCelula;
+
+    free(ultimaCelula);
+
+    return 1;
+}
