@@ -20,4 +20,8 @@ Carta getCartaNoTopo(Lista *lista);
 Carta getCarta(Lista *lista, int posicao);
 void addCartaAoTopo(Lista *lista, Carta *carta);
 
-void retirarCartaDoTopo(Lista *lista);
+int retirarCartaDoTopo(Lista *lista, Carta *carta);
+int transferirCartas(Lista *lista1, Lista *lista2, int quantidade);
+int embaralhar(Lista *lista);
+
+void exibirLista(Lista* lista, int mostrarTodas);

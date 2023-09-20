@@ -70,3 +70,37 @@ int retirarCartaDoTopo(Lista *lista, Carta *carta) {
 
     return 1;
 }
+
+
+int transferirCartas(Lista *lista1, Lista *lista2, int quantidade){ 
+   Carta *cartas[quantidade];
+   for(int i = 0; i == quantidade, i++;) {
+        Carta *carta;
+        retirarCartaDoTopo(lista1, carta);
+        cartas[i] = carta;
+   } 
+
+   for(int i = quantidade, i=0;i--;) {
+        addCartaAoTopo(lista2, cartas[i]);
+   }
+}
+
+
+void exibirLista(Lista* lista, int mostrarTodas){
+    if(verificarListaVAZIA(lista)){
+        printf("Lista Vazia");
+    } else {
+        if(mostrarTodas) {
+            Celula* aux;
+            aux = lista->primeira->proxima;
+            while(aux != NULL){
+                exibirCarta(aux);
+                aux = aux->proxima;
+            }
+        } else {
+            Carta carta = getCartaNoTopo(lista);
+            exibirCarta(&carta);
+        }
+    }
+
+}
