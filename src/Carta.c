@@ -87,5 +87,7 @@ void exibirCarta(Carta *carta) {
         default:
             break;
         }
+    }else{
+        printf("[  ]");
     }
 }
