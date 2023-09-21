@@ -10,7 +10,7 @@ void criarLista(Lista *lista){
 
 int getTamanho(Lista* lista){
     Celula* aux;
-    int tamanhoLista;
+    int tamanhoLista = 0;
     aux = lista->primeira;
     while(aux != NULL){
         aux = aux->proxima;
@@ -40,15 +40,10 @@ Carta getCarta(Lista *lista, int posicao) {
 }
 
 void addCartaAoTopo(Lista *lista, Carta *carta) {
-    if(verificarListaVAZIA(lista)){
-        lista->ultima = (Celula*) malloc(sizeof(Celula));
-        lista->primeira = lista->ultima;
-    }else{
         lista->ultima->proxima = (Celula *) malloc(sizeof(Celula));
         lista->ultima = lista->ultima->proxima;
         lista->ultima->carta = *carta;
         lista->ultima->proxima = NULL;
-    }
 }
 
 int retirarCartaDoTopo(Lista *lista, Carta *carta) {
