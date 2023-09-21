@@ -1,5 +1,6 @@
 #include "Lista.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 void criarLista(Lista *lista){
     lista->primeira = (Celula*) malloc(sizeof(Celula));
@@ -20,12 +21,12 @@ int getTamanho(Lista* lista){
 
 int verificarListaVAZIA(Lista* lista){
     return (lista->primeira == lista->ultima);
-};
+}
 
 
 Carta getCartaNoTopo(Lista *lista) {
     return lista->ultima->carta;
-};
+}
 
 Carta getCarta(Lista *lista, int posicao) {
     int contador = 0;
@@ -36,7 +37,8 @@ Carta getCarta(Lista *lista, int posicao) {
     }
 
     return celulaAtual->carta;
-};
+}
+
 void addCartaAoTopo(Lista *lista, Carta *carta) {
     if(verificarListaVAZIA(lista)){
         lista->ultima = (Celula*) malloc(sizeof(Celula));
@@ -47,7 +49,7 @@ void addCartaAoTopo(Lista *lista, Carta *carta) {
         lista->ultima->carta = *carta;
         lista->ultima->proxima = NULL;
     }
-};
+}
 
 int retirarCartaDoTopo(Lista *lista, Carta *carta) {
     Celula *ultimaCelula = lista->primeira->proxima;
@@ -72,16 +74,16 @@ int retirarCartaDoTopo(Lista *lista, Carta *carta) {
 }
 
 
-int transferirCartas(Lista *lista1, Lista *lista2, int quantidade){ 
+void transferirCartas(Lista *lista1, Lista *lista2, int quantidade){ 
    Carta *cartas[quantidade];
-   for(int i = 0; i == quantidade, i++;) {
-        Carta *carta;
-        retirarCartaDoTopo(lista1, carta);
-        cartas[i] = carta;
+   for(int i = 0; i == quantidade; i++) {
+        Carta carta;
+        retirarCartaDoTopo(lista1, &carta);
+        cartas[i] = &carta;
    } 
 
-   for(int i = quantidade, i=0;i--;) {
-        addCartaAoTopo(lista2, cartas[i]);
+   for(int j = quantidade; (j = 0) ; j--) {
+        addCartaAoTopo(lista2, cartas[j]);
    }
 }
 
@@ -94,7 +96,8 @@ void exibirLista(Lista* lista, int mostrarTodas){
             Celula* aux;
             aux = lista->primeira->proxima;
             while(aux != NULL){
-                exibirCarta(aux);
+                Carta cartaAtual = aux->carta;
+                exibirCarta(&cartaAtual);
                 aux = aux->proxima;
             }
         } else {
