@@ -19,7 +19,7 @@ int getTamanho(Lista* lista){
     return (tamanhoLista);
 }
 
-int verificarListaVAZIA(Lista* lista){
+int verificarListaVazia(Lista* lista){
     return (lista->primeira == lista->ultima);
 }
 
@@ -50,7 +50,7 @@ int retirarCartaDoTopo(Lista *lista, Carta *carta) {
     Celula *ultimaCelula = lista->primeira->proxima;
     Celula *penultimaCelula = lista->primeira;
 
-    if(verificarListaVAZIA(lista)) {
+    if(verificarListaVazia(lista)) {
         return 0;
     }
     *carta = lista->ultima->carta;
@@ -68,23 +68,48 @@ int retirarCartaDoTopo(Lista *lista, Carta *carta) {
     return 1;
 }
 
+void transferirCartas(Lista* listaOrigem, Lista* listaDestino, int quantidade) {
+    int tamanhoOrigem = getTamanho(listaOrigem);
 
-void transferirCartas(Lista *lista1, Lista *lista2, int quantidade){ 
-   Carta *cartas[quantidade];
-   for(int i = 0; i == quantidade; i++) {
-        Carta carta;
-        retirarCartaDoTopo(lista1, &carta);
-        cartas[i] = &carta;
-   } 
+    if ((quantidade > (tamanhoOrigem - 1)) || quantidade <= 0) {
+        printf("Quantidade inválida de cartas para mover.\n");
+        return;
+    }
+    int posicaoPrimeiraCarta = tamanhoOrigem - quantidade;
+    Celula* anterior = NULL;
+    Celula* atual = listaOrigem->primeira;
+    for (int i = 0; i < posicaoPrimeiraCarta; i++) {
+        anterior = atual;
+        atual = atual->proxima;
+    }
+    Celula* primeiraOrigem = listaOrigem->primeira;
 
-   for(int j = quantidade; (j = 0) ; j--) {
-        addCartaAoTopo(lista2, cartas[j]);
-   }
+    for (int i = 0; i < quantidade; i++) {
+        Celula* proxima = atual->proxima;
+        Carta carta = atual->carta;
+        addCartaAoTopo(listaDestino, &carta);
+        free(atual);
+        atual = proxima;
+    }
+
+    if (anterior) {
+        anterior->proxima = atual;
+    } else {
+        listaOrigem->primeira = atual;
+    }
+
+    listaOrigem->ultima = (anterior != NULL) ? anterior : listaOrigem->primeira->proxima;
+
+    if(verificarListaVazia(listaOrigem)) {
+        listaOrigem->primeira->proxima = NULL;
+        listaOrigem->ultima->proxima = NULL;
+    }
+
+    free(primeiraOrigem);
 }
 
-
 void exibirLista(Lista* lista, int mostrarTodas){
-    if(verificarListaVAZIA(lista)){
+    if(verificarListaVazia(lista)){
         printf("Lista Vazia");
     } else {
         if(mostrarTodas) {
