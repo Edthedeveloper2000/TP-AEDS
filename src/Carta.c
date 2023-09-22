@@ -90,4 +90,6 @@ void exibirCarta(Carta *carta) {
     }else{
         printf("[  ]");
     }
+
+    printf("\n");
 }

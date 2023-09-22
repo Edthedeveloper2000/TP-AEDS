@@ -95,10 +95,10 @@ void exibirLista(Lista* lista, int mostrarTodas){
                 exibirCarta(&cartaAtual);
                 aux = aux->proxima;
             }
+            free(aux);
         } else {
             Carta carta = getCartaNoTopo(lista);
             exibirCarta(&carta);
         }
     }
-
 }
