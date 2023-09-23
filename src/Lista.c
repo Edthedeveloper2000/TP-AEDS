@@ -82,7 +82,7 @@ void transferirCartas(Lista* listaOrigem, Lista* listaDestino, int quantidade) {
         anterior = atual;
         atual = atual->proxima;
     }
-    Celula* primeiraOrigem = listaOrigem->primeira;
+    Celula* primeiraOrigem = listaOrigem->primeira->proxima;
 
     for (int i = 0; i < quantidade; i++) {
         Celula* proxima = atual->proxima;
