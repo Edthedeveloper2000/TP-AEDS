@@ -19,6 +19,7 @@ int verificarListaVazia(Lista *lista);
 Carta getCartaNoTopo(Lista *lista);
 Carta getCarta(Lista *lista, int posicao);
 void addCartaAoTopo(Lista *lista, Carta *carta);
+void addCartaEmPosicaoQualquer(Lista *lista, Carta *carta, int posicao);
 
 int retirarCartaDoTopo(Lista *lista, Carta *carta);
 void transferirCartas(Lista *lista1, Lista *lista2, int quantidade);

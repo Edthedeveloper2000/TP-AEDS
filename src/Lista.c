@@ -11,7 +11,7 @@ void criarLista(Lista *lista){
 int getTamanho(Lista* lista){
     Celula* aux;
     int tamanhoLista = 0;
-    aux = lista->primeira;
+    aux = lista->primeira->proxima;
     while(aux != NULL){
         aux = aux->proxima;
         tamanhoLista++;
@@ -39,11 +39,45 @@ Carta getCarta(Lista *lista, int posicao) {
     return celulaAtual->carta;
 }
 
+Celula * getCelula(Lista *lista, int posicao) {
+    int contador = 0;
+    Celula *celulaAtual = lista->primeira->proxima;
+    while(contador != posicao) {
+        celulaAtual = celulaAtual->proxima;
+        contador++;
+    }
+
+    return celulaAtual;
+}
+
 void addCartaAoTopo(Lista *lista, Carta *carta) {
-        lista->ultima->proxima = (Celula *) malloc(sizeof(Celula));
-        lista->ultima = lista->ultima->proxima;
-        lista->ultima->carta = *carta;
-        lista->ultima->proxima = NULL;
+    lista->ultima->proxima = (Celula *) malloc(sizeof(Celula));
+    lista->ultima = lista->ultima->proxima;
+    lista->ultima->carta = *carta;
+    lista->ultima->proxima = NULL;
+}
+
+void addCartaEmPosicaoQualquer(Lista *lista, Carta *carta, int posicao) {
+    Celula *atual = lista->primeira->proxima;
+    Celula *aux = atual;
+
+    if(!verificarListaVAZIA(lista) && posicao >1) {
+        int cont = 0;
+        while (atual != NULL && cont < posicao - 1) {
+        aux = atual;
+        atual = atual->proxima;
+        cont++;
+    }
+    } else {
+        aux = lista->primeira;
+    }
+    
+    Celula *celulaTemp = aux->proxima;
+    aux->proxima = (Celula *)malloc(sizeof(Celula));
+    aux->proxima->carta = *carta;
+    aux->proxima->proxima = celulaTemp;
+
+    free(aux);
 }
 
 int retirarCartaDoTopo(Lista *lista, Carta *carta) {
@@ -81,7 +115,6 @@ void transferirCartas(Lista *lista1, Lista *lista2, int quantidade){
         addCartaAoTopo(lista2, cartas[j]);
    }
 }
-
 
 void exibirLista(Lista* lista, int mostrarTodas){
     if(verificarListaVAZIA(lista)){
