@@ -90,5 +90,5 @@ void exibirCarta(Carta *carta) {
         printf("[  ]");
     }
 
-    printf("\n");
+    printf(" ");
 }
