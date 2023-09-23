@@ -1,6 +1,7 @@
 #include "Lista.h"
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 void criarLista(Lista *lista){
     lista->primeira = (Celula*) malloc(sizeof(Celula));
@@ -140,6 +141,30 @@ void transferirCartas(Lista* listaOrigem, Lista* listaDestino, int quantidade) {
     }
 
     free(primeiraOrigem);
+}
+
+void embaralhar(Lista *lista) {
+    int cont;
+    int tamanho = getTamanho(lista);
+
+    if (tamanho <= 1) {
+        // Não é necessário embaralhar uma lista com 0 ou 1 elemento
+        return;
+    }
+
+    srand(time(NULL));
+
+    for (cont = 0; cont < tamanho; cont++) {
+        int posicaoAleatoria = rand() % tamanho;
+        Celula *celulaAleatoria = getCelula(lista, posicaoAleatoria);
+        Celula *celulaAtual = getCelula(lista, cont);
+        Carta cartaAleatoria = getCarta(lista, posicaoAleatoria);
+        Carta cartaAtual = getCarta(lista, cont);
+
+        // Trocar as cartas entre as células
+        celulaAleatoria->carta = cartaAtual;
+        celulaAtual->carta = cartaAleatoria;
+    }
 }
 
 void exibirLista(Lista* lista, int mostrarTodas){
