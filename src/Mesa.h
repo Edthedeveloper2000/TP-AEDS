@@ -1,4 +1,4 @@
-#include <lista.h>
+#include "Lista.h"
 typedef struct{
     Lista baralho;
     Lista descarte; 
@@ -8,6 +8,8 @@ typedef struct{
 }Mesa;
 
 void inicializar(Mesa *mesa);
-void carregarbaralho(Carta *carta[]);
+void carregarbaralho(Mesa *mesa, Carta *cartas[], int tamanho);
+void carregarBaralhoAleatorio(Mesa *mesa, Carta *cartas[]);
+void exibirMesa(Mesa *mesa);
 void preparar(Lista *lista,Mesa *mesa);
 void verificarvitoria(Mesa *mesa);
