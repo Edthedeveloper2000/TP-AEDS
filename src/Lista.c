@@ -61,7 +61,7 @@ void addCartaEmPosicaoQualquer(Lista *lista, Carta *carta, int posicao) {
     Celula *atual = lista->primeira->proxima;
     Celula *aux = atual;
 
-    if(!verificarListaVAZIA(lista) && posicao >1) {
+    if(!verificarListaVazia(lista) && posicao >1) {
         int cont = 0;
         while (atual != NULL && cont < posicao - 1) {
         aux = atual;
