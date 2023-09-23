@@ -40,7 +40,7 @@ int compararNaipesIguais(Carta *carta1, Carta *carta2) {
 } 
 
 int compararNaipesDiferentes( Carta *carta1, Carta *carta2){
-    if(!carta1) {
+    if(carta1 == NULL) {
         if(carta2->valor==13){
             return 1;
         } else {
@@ -49,19 +49,18 @@ int compararNaipesDiferentes( Carta *carta1, Carta *carta2){
     }
 
     if(carta1->naipe == 'c' || carta1->naipe == 'o') {
-        if(carta2->naipe == 'p' || carta2->naipe == 'e' ) {
+        if(((carta2->naipe == 'p') && (carta2->valor == carta1->valor + 1)) || ((carta2->naipe == 'e') && (carta2->valor == carta1->valor + 1))) {
             return 1;
         } else {
             return 0;
         }
     } else if (carta1->naipe =='p' || carta1->naipe == 'e') {
-        if(carta2->naipe == 'c' || carta2->naipe == 'o') {
+        if(((carta2->naipe == 'c') && (carta2->valor == carta1->valor + 1)) || ((carta2->naipe == 'o') && (carta2->valor == carta1->valor + 1))) {
             return 1;
         } else {
             return 0;
         }
     }
-
     return 0;
 }
 
