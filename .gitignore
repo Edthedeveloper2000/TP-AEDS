@@ -54,3 +54,4 @@ dkms.conf
 # VS CODE
 
 .vscode
+test.c
