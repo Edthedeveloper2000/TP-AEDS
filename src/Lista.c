@@ -104,7 +104,7 @@ int retirarCartaDoTopo(Lista *lista, Carta *carta) {
 }
 
 void transferirCartas(Lista* listaOrigem, Lista* listaDestino, int quantidade) {
-    int tamanhoOrigem = getTamanho(listaOrigem);
+    int tamanhoOrigem = (getTamanho(listaOrigem) + 1);
 
     if ((quantidade > (tamanhoOrigem - 1)) || quantidade <= 0) {
         printf("Quantidade inválida de cartas para mover.\n");
@@ -117,7 +117,7 @@ void transferirCartas(Lista* listaOrigem, Lista* listaDestino, int quantidade) {
         anterior = atual;
         atual = atual->proxima;
     }
-    Celula* primeiraOrigem = listaOrigem->primeira->proxima;
+    Celula* primeiraOrigem = listaOrigem->primeira;
 
     for (int i = 0; i < quantidade; i++) {
         Celula* proxima = atual->proxima;
