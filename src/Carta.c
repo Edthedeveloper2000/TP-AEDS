@@ -40,7 +40,7 @@ int compararNaipesIguais(Carta *carta1, Carta *carta2) {
 } 
 
 int compararNaipesDiferentes( Carta *carta1, Carta *carta2){
-    if(carta1 == NULL) {
+    if(!carta1) {
         if(carta2->valor==13){
             return 1;
         } else {
