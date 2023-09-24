@@ -96,7 +96,8 @@ void moverTableauBase(Mesa *mesa, int indice) {
 
         mesa->pontuacao += 10;
     }
-
+    
+    revelarCartaTableau(mesa, &mesa->tableau[indice]);
 }
 
 void moverBaseTableau(Mesa *mesa, int indiceBase, int indiceTableau) {
@@ -110,11 +111,27 @@ void moverBaseTableau(Mesa *mesa, int indiceBase, int indiceTableau) {
     }
 }
 
+void moverColunasDoTableau(Mesa *mesa, int quantidade, int indiceObtidas, int indiceReceber){
+     Carta cartaTopoReceber = getCartaNoTopo(&mesa->tableau[indiceReceber]);
+
+     // Posicao da carta mais abaixo na pilha que será transferida
+     int posicao =  getTamanho(&mesa->tableau[indiceObtidas]) - quantidade;
+
+     Carta cartaBaixoTransferir = getCarta(&mesa->tableau[indiceObtidas], posicao);
+     
+    if(compararNaipesDiferentes(&cartaTopoReceber, &cartaBaixoTransferir)) {
+        transferirCartas(&mesa->tableau[indiceObtidas], &mesa->tableau[indiceReceber], quantidade);
+        revelarCartaTableau(mesa,&mesa->tableau[indiceObtidas]);
+    }
+};
+
 void revelarCartaTableau(Mesa *mesa, Lista *coluna) {
     Carta novaCartaNoTopo = getCartaNoTopo(coluna);
-    novaCartaNoTopo.posicao = CIMA;
-    coluna->ultima->carta = novaCartaNoTopo;
-    mesa->pontuacao+=5;
+    if(novaCartaNoTopo.posicao == BAIXO) {
+        novaCartaNoTopo.posicao = CIMA;
+        coluna->ultima->carta = novaCartaNoTopo;
+        mesa->pontuacao+=5;
+    }
 }
 
 void exibirMesa(Mesa *mesa) {
@@ -125,16 +142,31 @@ void exibirMesa(Mesa *mesa) {
     exibirLista(&mesa->descarte, 1);
     printf("\n");
     printf("Bases: ");
-    for(int i=0; i<4; i++) {
+    for(int i = 0; i < 4; i++) {
         printf("Base %d: ", i);
         exibirLista(&mesa->bases[i], 1);
     }
 
     printf("Tableau: ");
-    for(int i=0; i<7; i++) {
+    for(int i = 0; i < 7; i++) {
         printf("Coluna %d: ", i);
         exibirLista(&mesa->tableau[i], 1);
     }
  
 }
 
+void verificarVitoria(Mesa* mesa){
+    int count = 0;
+    for (int i = 0; i < 4 ; i++){
+        Carta ultimaDaBase = getCartaNoTopo(&mesa->bases[i]);
+        int valorUltimaDaBase = getValor(&ultimaDaBase);
+        if(valorUltimaDaBase == 13){
+            count++;
+        }
+    // Corrigir, verificar como será a demonstração de vitória
+    if(count == 4){
+        printf("Vitoria!!!\nPontuação Total: %d", mesa->pontuacao);
+        exit(0);
+    }
+    }
+}
