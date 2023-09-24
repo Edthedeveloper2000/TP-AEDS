@@ -7,9 +7,17 @@ typedef struct{
     int pontuacao;
 }Mesa;
 
-void inicializar(Mesa *mesa);
-void carregarbaralho(Mesa *mesa, Carta *cartas[], int tamanho);
+void inicializarMesa(Mesa *mesa);
+void carregarBaralho(Mesa *mesa, Carta *cartas[], int tamanho);
 void carregarBaralhoAleatorio(Mesa *mesa, Carta *cartas[]);
 void exibirMesa(Mesa *mesa);
-void preparar(Lista *lista,Mesa *mesa);
-void verificarvitoria(Mesa *mesa);
+void preparar(Mesa *mesa);
+void verificarVitoria(Mesa *mesa);
+void comprarCarta(Mesa *mesa);
+void moverDescarteBase(Mesa *mesa, int indice);
+void moverDescarteTableau(Mesa *mesa,int indice);
+void moverTableauBase(Mesa *mesa, int indice);
+void moverBaseTableau(Mesa *mesa, int indiceBase, int indiceTableau);
+void moverColunasDoTableau(Mesa *mesa, int quantidade, int indiceObtidas, int indiceReceber);
+void revelarCartaTableau(Mesa *mesa, Lista *lista);
+

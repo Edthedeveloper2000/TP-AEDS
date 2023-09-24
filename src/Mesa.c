@@ -1,16 +1,120 @@
+#include <stdio.h>
 #include "Mesa.h"
 
-void carregarbaralho(Mesa *mesa, Carta *cartas[], int tamanho) {
-    for(int i = 0; i< tamanho; i++) {
+void inicializarMesa(Mesa *mesa){
+    mesa->pontuacao = 0;
+    criarLista(&mesa->baralho);
+    criarLista(&mesa->descarte);
+    
+    for(int i = 0; i < 4; i++) {
+        criarLista(&mesa->bases[i]);
+    }
+
+    for(int j = 0; j < 7; j++) {
+        criarLista(&mesa->tableau[j]);
+    }
+}
+
+void carregarBaralho(Mesa *mesa, Carta *cartas[], int tamanho) {
+    for(int i = 0; i < tamanho; i++) {
         addCartaAoTopo(&mesa->baralho, cartas[i]);
     }
-};
+}
 
 void carregarBaralhoAleatorio(Mesa *mesa, Carta *cartas[]) {
-    for(int i = 0; i< 52; i++) {
+    for(int i = 0; i < 52; i++) {
         addCartaAoTopo(&mesa->baralho, cartas[i]);
     }
     embaralhar(&mesa->baralho);
+}
+
+void preparar(Mesa *mesa) {
+    int quantidadeDeCartas = 1;
+    for(int i =0; i < 7; i++) {
+        transferirCartas(&mesa->baralho, &mesa->tableau[i], quantidadeDeCartas);
+        quantidadeDeCartas++;
+    }
+}
+
+
+void comprarCarta(Mesa *mesa) {
+    transferirCartas(&mesa->baralho, &mesa->descarte, 1);
+}
+
+void moverDescarteBase(Mesa *mesa, int indice) {
+    Carta cartaDescarte = getCartaNoTopo(&mesa->descarte);
+    Carta cartaBase = getCartaNoTopo(&mesa->bases[indice]);
+    
+    if(compararNaipesIguais(&cartaDescarte, &cartaBase)) {
+        transferirCartas(&mesa->descarte, &mesa->bases[indice], 1);
+        
+        mesa->pontuacao += 10;
+    } else {
+        printf("Movimento inválido");
+    }
+}
+
+void moverDescarteTableau(Mesa *mesa,int indice) {
+    Carta cartaDescarte = getCartaNoTopo(&mesa->descarte);
+    Carta cartaTableau = getCartaNoTopo(&mesa->tableau[indice]);
+    
+    if(compararNaipesDiferentes(&cartaDescarte, &cartaTableau)) {
+        transferirCartas(&mesa->descarte, &mesa->tableau[indice], 1);
+        
+        mesa->pontuacao += 5;
+    } else {
+        printf("Movimento inválido");
+    }
+}
+
+void moverTableauBase(Mesa *mesa, int indice) {
+    Carta cartaTableau = getCartaNoTopo(&mesa->tableau[indice]);
+    int baseIndice;
+    switch (cartaTableau.naipe)
+    {
+    case 'c':
+        baseIndice = 0;
+        break;
+    case 'p' :
+        baseIndice = 1;
+        break;
+    case 'o' :
+        baseIndice = 2;
+        break;
+    case 'e' :
+        baseIndice = 3;
+        break;
+    
+    default:
+        break;
+    }
+    
+    Carta cartaBase = getCartaNoTopo(&mesa->bases[baseIndice]);
+
+    if(compararNaipesIguais(&cartaTableau, &cartaBase)) {
+        transferirCartas(&mesa->tableau[indice], &mesa->bases[baseIndice], 1);
+
+        mesa->pontuacao += 10;
+    }
+
+}
+
+void moverBaseTableau(Mesa *mesa, int indiceBase, int indiceTableau) {
+    Carta cartaTableau = getCartaNoTopo(&mesa->tableau[indiceTableau]);
+    Carta cartaBase = getCartaNoTopo(&mesa->bases[indiceBase]);
+
+    if(compararNaipesDiferentes(&cartaTableau, &cartaBase)) {
+        transferirCartas(&mesa->bases[indiceBase], &mesa->tableau[indiceTableau], 1);
+
+        mesa->pontuacao -= 15;
+    }
+}
+
+void revelarCartaTableau(Mesa *mesa, Lista *coluna) {
+    Carta novaCartaNoTopo = getCartaNoTopo(coluna);
+    novaCartaNoTopo.posicao = CIMA;
+    coluna->ultima->carta = novaCartaNoTopo;
+    mesa->pontuacao+=5;
 }
 
 void exibirMesa(Mesa *mesa) {
