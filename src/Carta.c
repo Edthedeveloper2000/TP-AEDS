@@ -48,14 +48,14 @@ int compararNaipesDiferentes( Carta *carta1, Carta *carta2){
         }
     }
 
-    if(carta1->naipe == 'c' || carta1->naipe == 'o') {
-        if(((carta2->naipe == 'p') && (carta2->valor == carta1->valor + 1)) || ((carta2->naipe == 'e') && (carta2->valor == carta1->valor + 1))) {
+    if(carta1->naipe == 'C' || carta1->naipe == 'O') {
+        if(((carta2->naipe == 'P') && (carta2->valor == carta1->valor + 1)) || ((carta2->naipe == 'E') && (carta2->valor == carta1->valor + 1))) {
             return 1;
         } else {
             return 0;
         }
-    } else if (carta1->naipe =='p' || carta1->naipe == 'e') {
-        if(((carta2->naipe == 'c') && (carta2->valor == carta1->valor + 1)) || ((carta2->naipe == 'o') && (carta2->valor == carta1->valor + 1))) {
+    } else if (carta1->naipe =='P' || carta1->naipe == 'E') {
+        if(((carta2->naipe == 'C') && (carta2->valor == carta1->valor + 1)) || ((carta2->naipe == 'O') && (carta2->valor == carta1->valor + 1))) {
             return 1;
         } else {
             return 0;
@@ -63,24 +63,23 @@ int compararNaipesDiferentes( Carta *carta1, Carta *carta2){
     }
     return 0;
 }
-
 void exibirCarta(Carta *carta) {
     if(carta->posicao == CIMA) { 
         switch (carta->naipe){
-        case 'c':
-            printf("[♥️ %d]", carta->valor);
+        case 'C':
+            printf("[C %d]", carta->valor);
             break;
 
-        case 'p' :
-            printf("[♣️ %d]", carta->valor);
+        case 'P' :
+            printf("[P %d]", carta->valor);
             break;
             
-        case 'e' :
-            printf("[♠️ %d]", carta->valor);
+        case 'E' :
+            printf("[E %d]", carta->valor);
             break;
 
-        case 'o' :
-            printf("[♦️ %d]", carta->valor);
+        case 'O' :
+            printf("[O %d]", carta->valor);
             break;
             
         default:
