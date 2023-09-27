@@ -55,10 +55,8 @@ void carregarBaralhoAleatorio(Mesa *mesa) {
 }
 
 void preparar(Mesa *mesa) {
-int quantidadeDeCartas = 1;
-    for(int i = 0; i < 7; i++) {
-        transferirCartas(&mesa->baralho, &mesa->tableau[i], quantidadeDeCartas);
-        quantidadeDeCartas++;
+    for (int i = 0; i < 7; i++) {
+        transferirCartas(&mesa->baralho, &mesa->tableau[i], i + 1);
     }
 }
 
