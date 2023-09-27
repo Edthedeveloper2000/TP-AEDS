@@ -9,7 +9,8 @@ typedef struct{
 
 void inicializarMesa(Mesa *mesa);
 void carregarBaralho(Mesa *mesa, Carta *cartas[], int tamanho);
-void carregarBaralhoAleatorio(Mesa *mesa, Carta *cartas[]);
+void criarBaralho(Carta *cartas);
+void carregarBaralhoAleatorio(Mesa *mesa);
 void exibirMesa(Mesa *mesa);
 void preparar(Mesa *mesa);
 void verificarVitoria(Mesa *mesa);
