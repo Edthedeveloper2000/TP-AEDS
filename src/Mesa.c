@@ -23,10 +23,9 @@ void carregarBaralho(Mesa *mesa, Carta *cartas[], int tamanho) {
 }
 
 void criarBaralho(Carta cartas[]){
-    int numNaipe = 0;
     char naipe;
     for (int i = 0; i<4; i++){
-            switch (numNaipe){
+            switch (i){
             case 0:
                 naipe = 'C';
                 break;
@@ -56,7 +55,7 @@ void carregarBaralhoAleatorio(Mesa *mesa) {
 }
 
 void preparar(Mesa *mesa) {
-    int quantidadeDeCartas = 1;
+int quantidadeDeCartas = 1;
     for(int i = 0; i < 7; i++) {
         transferirCartas(&mesa->baralho, &mesa->tableau[i], quantidadeDeCartas);
         quantidadeDeCartas++;
