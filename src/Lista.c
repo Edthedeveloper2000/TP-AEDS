@@ -104,22 +104,17 @@ int retirarCartaDoTopo(Lista *lista, Carta *carta) {
 }
 
 void transferirCartas(Lista* listaOrigem, Lista* listaDestino, int quantidade) {
-    int tamanhoOrigem = (getTamanho(listaOrigem) + 1);
-
-    if ((quantidade > (tamanhoOrigem - 1)) || quantidade <= 0) {
-        printf("Quantidade inválida de cartas para mover.\n");
+    if (quantidade <= 0 || verificarListaVazia(listaOrigem)) {
+        printf("Quantidade inválida de cartas para mover ou lista de origem vazia.\n");
         return;
     }
-    int posicaoPrimeiraCarta = tamanhoOrigem - quantidade;
+
     Celula* anterior = NULL;
     Celula* atual = listaOrigem->primeira;
-    for (int i = 0; i < posicaoPrimeiraCarta; i++) {
-        anterior = atual;
-        atual = atual->proxima;
-    }
-    Celula* primeiraOrigem = listaOrigem->primeira;
-
     for (int i = 0; i < quantidade; i++) {
+        if (atual == NULL) {
+            break; // Evitar acesso a uma célula inexistente
+        }
         Celula* proxima = atual->proxima;
         Carta carta = atual->carta;
         addCartaAoTopo(listaDestino, &carta);
@@ -133,15 +128,16 @@ void transferirCartas(Lista* listaOrigem, Lista* listaDestino, int quantidade) {
         listaOrigem->primeira = atual;
     }
 
-    listaOrigem->ultima = (anterior != NULL) ? anterior : listaOrigem->primeira->proxima;
-
-    if(verificarListaVazia(listaOrigem)) {
-        listaOrigem->primeira->proxima = NULL;
-        listaOrigem->ultima->proxima = NULL;
+    if (atual == NULL) {
+        listaOrigem->ultima = anterior;
     }
 
-    free(primeiraOrigem);
+    if (verificarListaVazia(listaOrigem)) {
+        listaOrigem->primeira = NULL;
+        listaOrigem->ultima = NULL;
+    }
 }
+
 
 void embaralhar(Lista *lista) {
     int cont;
