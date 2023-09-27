@@ -67,24 +67,30 @@ void exibirCarta(Carta *carta) {
     if(carta->posicao == CIMA) { 
         switch (carta->naipe){
         case 'C':
+            printf("\033[1;31m");
             printf("[C %d]", carta->valor);
             break;
 
         case 'P' :
+            printf("\033[90m");
             printf("[P %d]", carta->valor);
             break;
             
         case 'E' :
+            printf("\033[90m");
             printf("[E %d]", carta->valor);
             break;
 
         case 'O' :
+            printf("\033[1;31m");
             printf("[O %d]", carta->valor);
             break;
             
         default:
             break;
         }
+
+        printf("\033[0m");
     }else{
         printf("[  ]");
     }
