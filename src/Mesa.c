@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "Mesa.h"
 
 void inicializarMesa(Mesa *mesa){
@@ -21,16 +22,42 @@ void carregarBaralho(Mesa *mesa, Carta *cartas[], int tamanho) {
     }
 }
 
-void carregarBaralhoAleatorio(Mesa *mesa, Carta *cartas[]) {
+void criarBaralho(Carta cartas[]){
+    int numNaipe = 0;
+    char naipe;
+    for (int i = 0; i<4; i++){
+            switch (numNaipe){
+            case 0:
+                naipe = 'C';
+                break;
+            case 1:
+                naipe = 'P';
+                break;
+            case 2:
+                naipe = 'O';
+                break;
+            case 3:
+                naipe = 'E';
+            default:
+                break;
+            }
+            for(int j = 0; j <13; j++){
+                criarCarta(&(cartas[i*13 + (j)]), naipe, j+1, CIMA);
+            }
+        }
+}
+void carregarBaralhoAleatorio(Mesa *mesa) {
+    Carta cartas[52];
+    criarBaralho(cartas);
     for(int i = 0; i < 52; i++) {
-        addCartaAoTopo(&mesa->baralho, cartas[i]);
+        addCartaAoTopo(&mesa->baralho, &cartas[i]);
     }
     embaralhar(&mesa->baralho);
 }
 
 void preparar(Mesa *mesa) {
     int quantidadeDeCartas = 1;
-    for(int i =0; i < 7; i++) {
+    for(int i = 0; i < 7; i++) {
         transferirCartas(&mesa->baralho, &mesa->tableau[i], quantidadeDeCartas);
         quantidadeDeCartas++;
     }
@@ -72,16 +99,16 @@ void moverTableauBase(Mesa *mesa, int indice) {
     int baseIndice;
     switch (cartaTableau.naipe)
     {
-    case 'c':
+    case 'C':
         baseIndice = 0;
         break;
-    case 'p' :
+    case 'P' :
         baseIndice = 1;
         break;
-    case 'o' :
+    case 'O' :
         baseIndice = 2;
         break;
-    case 'e' :
+    case 'E' :
         baseIndice = 3;
         break;
     
@@ -123,7 +150,7 @@ void moverColunasDoTableau(Mesa *mesa, int quantidade, int indiceObtidas, int in
         transferirCartas(&mesa->tableau[indiceObtidas], &mesa->tableau[indiceReceber], quantidade);
         revelarCartaTableau(mesa,&mesa->tableau[indiceObtidas]);
     }
-};
+}
 
 void revelarCartaTableau(Mesa *mesa, Lista *coluna) {
     Carta novaCartaNoTopo = getCartaNoTopo(coluna);
@@ -137,20 +164,22 @@ void revelarCartaTableau(Mesa *mesa, Lista *coluna) {
 void exibirMesa(Mesa *mesa) {
     printf("Baralho: ");
     exibirLista(&mesa->baralho, 1);
-    printf("\n");
+    printf("\n\n");
     printf("Descarte: ");
     exibirLista(&mesa->descarte, 1);
-    printf("\n");
+    printf("\n\n");
     printf("Bases: ");
     for(int i = 0; i < 4; i++) {
         printf("Base %d: ", i);
         exibirLista(&mesa->bases[i], 1);
+        printf("\n\n");
     }
 
     printf("Tableau: ");
     for(int i = 0; i < 7; i++) {
         printf("Coluna %d: ", i);
         exibirLista(&mesa->tableau[i], 1);
+        printf("\n");
     }
  
 }
@@ -163,7 +192,6 @@ void verificarVitoria(Mesa* mesa){
         if(valorUltimaDaBase == 13){
             count++;
         }
-    // Corrigir, verificar como será a demonstração de vitória
     if(count == 4){
         printf("Vitoria!!!\nPontuação Total: %d", mesa->pontuacao);
         exit(0);
