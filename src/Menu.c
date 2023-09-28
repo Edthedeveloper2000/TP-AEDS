@@ -69,7 +69,7 @@ void executarAcao(Mesa *mesa,  int opcao) {
         comprarCarta(mesa);
         break;
     case 5:
-        AcaoMoverDescarteParaBase(mesa);
+        moverDescarteBase(mesa);
         break;
     case 6:
         AcaoMoverDescarteParaTableau(mesa);
@@ -118,15 +118,6 @@ void AcaoMoverDaBaseParaOTableau(Mesa *mesa) {
     scanf("%d", &indiceTableau);
 
     moverBaseTableau(mesa, indiceBase, indiceTableau);
-}
-
-void AcaoMoverDescarteParaBase(Mesa *mesa) {
-    int indiceBase;
-
-    printf("\nPara qual base deseja enviar uma carta?\n");
-    scanf("%d", &indiceBase);
-
-    moverDescarteBase(mesa, indiceBase);
 }
 
 void AcaoMoverDescarteParaTableau(Mesa *mesa) {
