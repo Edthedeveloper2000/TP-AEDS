@@ -16,6 +16,6 @@ Posicao getPosicao(Carta *Carta);
 void setPosicao(Carta *carta);
 
 int compararNaipesIguais(Carta *carta1, Carta *carta2);
-int compararNaipesDiferentes(Carta *carta1, Carta *carta2);
+int compararNaipesDiferentes(Carta *cartaAtual, Carta *proximaCarta);
 
 void exibirCarta(Carta *carta);
