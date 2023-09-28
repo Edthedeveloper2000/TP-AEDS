@@ -23,39 +23,39 @@ void setPosicao(Carta *carta) {
     carta->posicao = !carta->posicao;
 }
 
-int compararNaipesIguais(Carta *carta1, Carta *carta2) {
-    if(!carta1) {
-        if(carta2->valor==1){
+int compararNaipesIguais(Carta *cartaAtual, Carta *proximaCarta) {
+    if(cartaAtual == NULL) {
+        if(proximaCarta->valor==1){
             return 1;
         } else {
             return 0;
         }
     } 
     
-    else if (carta1->naipe == carta2->naipe && carta2->valor == (carta1->valor - 1)) {
+    else if (cartaAtual->naipe == proximaCarta->naipe && proximaCarta->valor == (cartaAtual->valor - 1)) {
         return 1;
     }
 
     return 0;
 } 
 
-int compararNaipesDiferentes( Carta *carta1, Carta *carta2){
-    if(!carta1) {
-        if(carta2->valor==13){
+int compararNaipesDiferentes( Carta *cartaAtual, Carta *proximaCarta){
+    if(cartaAtual == NULL) {
+        if(proximaCarta->valor == 13){
             return 1;
         } else {
             return 0;
         }
     }
 
-    if(carta1->naipe == 'C' || carta1->naipe == 'O') {
-        if(((carta2->naipe == 'P') && (carta2->valor == carta1->valor + 1)) || ((carta2->naipe == 'E') && (carta2->valor == carta1->valor + 1))) {
+    if(cartaAtual->naipe == 'C' || cartaAtual->naipe == 'O') {
+        if(((proximaCarta->naipe == 'P') && (proximaCarta->valor == cartaAtual->valor - 1)) || ((proximaCarta->naipe == 'E') && (proximaCarta->valor == cartaAtual->valor - 1))) {
             return 1;
         } else {
             return 0;
         }
-    } else if (carta1->naipe =='P' || carta1->naipe == 'E') {
-        if(((carta2->naipe == 'C') && (carta2->valor == carta1->valor + 1)) || ((carta2->naipe == 'O') && (carta2->valor == carta1->valor + 1))) {
+    } else if (cartaAtual->naipe =='P' || cartaAtual->naipe == 'E') {
+        if(((proximaCarta->naipe == 'C') && (proximaCarta->valor == cartaAtual->valor - 1)) || ((proximaCarta->naipe == 'O') && (proximaCarta->valor == cartaAtual->valor - 1))) {
             return 1;
         } else {
             return 0;
