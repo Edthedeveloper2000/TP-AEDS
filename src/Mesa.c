@@ -62,14 +62,19 @@ void preparar(Mesa *mesa) {
 
 
 void comprarCarta(Mesa *mesa) {
-    transferirCartas(&mesa->baralho, &mesa->descarte, 1);
+    if(getTamanho(&mesa->baralho) == 0){
+        transferirCartas(&mesa->descarte, &mesa->baralho, getTamanho(&mesa->descarte));
+        mesa->pontuacao -= 50;
+    } else {
+        transferirCartas(&mesa->baralho, &mesa->descarte, 1);
+    }
 }
 
 void moverDescarteBase(Mesa *mesa, int indice) {
     Carta cartaDescarte = getCartaNoTopo(&mesa->descarte);
     Carta cartaBase = getCartaNoTopo(&mesa->bases[indice]);
     
-    if(compararNaipesIguais(&cartaDescarte, &cartaBase)) {
+    if(compararNaipesIguais(&cartaBase, &cartaDescarte)) {
         transferirCartas(&mesa->descarte, &mesa->bases[indice], 1);
         
         mesa->pontuacao += 10;
@@ -82,7 +87,7 @@ void moverDescarteTableau(Mesa *mesa,int indice) {
     Carta cartaDescarte = getCartaNoTopo(&mesa->descarte);
     Carta cartaTableau = getCartaNoTopo(&mesa->tableau[indice]);
     
-    if(compararNaipesDiferentes(&cartaDescarte, &cartaTableau)) {
+    if(compararNaipesDiferentes( &cartaTableau, &cartaDescarte)) {
         transferirCartas(&mesa->descarte, &mesa->tableau[indice], 1);
         
         mesa->pontuacao += 5;
@@ -115,7 +120,7 @@ void moverTableauBase(Mesa *mesa, int indice) {
     
     Carta cartaBase = getCartaNoTopo(&mesa->bases[baseIndice]);
 
-    if(compararNaipesIguais(&cartaTableau, &cartaBase)) {
+    if(compararNaipesIguais(&cartaBase, &cartaTableau)) {
         transferirCartas(&mesa->tableau[indice], &mesa->bases[baseIndice], 1);
 
         mesa->pontuacao += 10;
@@ -143,10 +148,10 @@ void moverColunasDoTableau(Mesa *mesa, int quantidade, int indiceObtidas, int in
 
      Carta cartaBaixoTransferir = getCarta(&mesa->tableau[indiceObtidas], posicao);
      
-    if(compararNaipesDiferentes(&cartaTopoReceber, &cartaBaixoTransferir)) {
+    //if(compararNaipesDiferentes(&cartaTopoReceber, &cartaBaixoTransferir)) {
         transferirCartas(&mesa->tableau[indiceObtidas], &mesa->tableau[indiceReceber], quantidade);
         revelarCartaTableau(mesa,&mesa->tableau[indiceObtidas]);
-    }
+    //}
 }
 
 void revelarCartaTableau(Mesa *mesa, Lista *coluna) {
@@ -169,7 +174,7 @@ void exibirMesa(Mesa *mesa) {
     for(int i = 0; i < 4; i++) {
         printf("Base %d: ", i);
         exibirLista(&mesa->bases[i], 1);
-        printf("\n\n");
+        printf("\n");
     }
 
     printf("Tableau: ");
