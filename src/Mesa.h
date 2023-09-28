@@ -15,7 +15,7 @@ void exibirMesa(Mesa *mesa);
 void preparar(Mesa *mesa);
 void verificarVitoria(Mesa *mesa);
 void comprarCarta(Mesa *mesa);
-void moverDescarteBase(Mesa *mesa, int indice);
+void moverDescarteBase(Mesa *mesa);
 void moverDescarteTableau(Mesa *mesa,int indice);
 void moverTableauBase(Mesa *mesa, int indice);
 void moverBaseTableau(Mesa *mesa, int indiceBase, int indiceTableau);

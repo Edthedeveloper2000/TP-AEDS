@@ -70,12 +70,31 @@ void comprarCarta(Mesa *mesa) {
     }
 }
 
-void moverDescarteBase(Mesa *mesa, int indice) {
+void moverDescarteBase(Mesa *mesa) {
     Carta cartaDescarte = getCartaNoTopo(&mesa->descarte);
-    Carta cartaBase = getCartaNoTopo(&mesa->bases[indice]);
+    int baseIndice;
+    switch (cartaDescarte.naipe)
+    {
+    case 'C':
+        baseIndice = 0;
+        break;
+    case 'P' :
+        baseIndice = 1;
+        break;
+    case 'O' :
+        baseIndice = 2;
+        break;
+    case 'E' :
+        baseIndice = 3;
+        break;
     
+    default:
+        break;
+    }
+    
+    Carta cartaBase = getCartaNoTopo(&mesa->bases[baseIndice]);
     if(compararNaipesIguais(&cartaBase, &cartaDescarte)) {
-        transferirCartas(&mesa->descarte, &mesa->bases[indice], 1);
+        transferirCartas(&mesa->descarte, &mesa->bases[baseIndice], 1);
         
         mesa->pontuacao += 10;
     } else {
