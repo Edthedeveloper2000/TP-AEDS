@@ -32,7 +32,7 @@ int compararNaipesIguais(Carta *cartaAtual, Carta *proximaCarta) {
         }
     } 
     
-    else if (cartaAtual->naipe == proximaCarta->naipe && proximaCarta->valor == (cartaAtual->valor - 1)) {
+    else if (cartaAtual->naipe == proximaCarta->naipe && proximaCarta->valor == (cartaAtual->valor + 1)) {
         return 1;
     }
 
