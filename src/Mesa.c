@@ -92,13 +92,20 @@ void moverDescarteBase(Mesa *mesa) {
         break;
     }
     
-    Carta cartaBase = getCartaNoTopo(&mesa->bases[baseIndice]);
-    if(compararNaipesIguais(&cartaBase, &cartaDescarte)) {
+    Carta *cartaBase;
+    
+    if(verificarListaVazia(&mesa->bases[baseIndice])) {
+        cartaBase = NULL;
+    } else {
+        *cartaBase = getCartaNoTopo(&mesa->bases[baseIndice]);
+    }
+    exibirCarta(&cartaBase);
+    if(compararNaipesIguais(cartaBase, &cartaDescarte)) {
         transferirCartas(&mesa->descarte, &mesa->bases[baseIndice], 1);
         
         mesa->pontuacao += 10;
     } else {
-        printf("Movimento inválido");
+        printf("Movimento inválido\n");
     }
 }
 
@@ -111,7 +118,7 @@ void moverDescarteTableau(Mesa *mesa,int indice) {
         
         mesa->pontuacao += 5;
     } else {
-        printf("Movimento inválido");
+        printf("Movimento inválido\n");
     }
 }
 
@@ -137,9 +144,14 @@ void moverTableauBase(Mesa *mesa, int indice) {
         break;
     }
     
-    Carta cartaBase = getCartaNoTopo(&mesa->bases[baseIndice]);
+    Carta *cartaBase;
+    if(verificarListaVazia(&mesa->bases[baseIndice])) {
+        cartaBase = NULL;
+    } else {
+        *cartaBase = getCartaNoTopo(&mesa->bases[baseIndice]);
+    }
 
-    if(compararNaipesIguais(&cartaBase, &cartaTableau)) {
+    if(compararNaipesIguais(cartaBase, &cartaTableau)) {
         transferirCartas(&mesa->tableau[indice], &mesa->bases[baseIndice], 1);
 
         mesa->pontuacao += 10;
