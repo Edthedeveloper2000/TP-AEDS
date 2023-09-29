@@ -62,8 +62,14 @@ void preparar(Mesa *mesa) {
 
 
 void comprarCarta(Mesa *mesa) {
-    if(getTamanho(&mesa->baralho) == 0){
-        transferirCartas(&mesa->descarte, &mesa->baralho, getTamanho(&mesa->descarte));
+   if(getTamanho(&mesa->baralho) == 0){
+        int tamanho = getTamanho(&mesa->descarte);
+        for(int i = 0; i < tamanho; i++){
+            Carta cartaAux = getCartaNoTopo(&mesa->descarte);
+            addCartaAoTopo(&mesa->baralho, &cartaAux);
+            retirarCartaDoTopo(&mesa->descarte, &cartaAux);
+        }
+
         mesa->pontuacao -= 50;
     } else {
         transferirCartas(&mesa->baralho, &mesa->descarte, 1);
