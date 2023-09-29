@@ -201,20 +201,19 @@ void revelarCartaTableau(Mesa *mesa, Lista *coluna) {
 }
 
 void exibirMesa(Mesa *mesa) {
+    printf("Pontuação atual: %d \n", mesa->pontuacao );
     printf("Baralho: ");
     exibirLista(&mesa->baralho, 1);
-    printf("\n\n");
+    printf("\n");
     printf("Descarte: ");
     exibirLista(&mesa->descarte, 1);
-    printf("\n\n");
-    printf("Bases: ");
+    printf("\n");
     for(int i = 0; i < 4; i++) {
         printf("Base %d: ", i);
         exibirLista(&mesa->bases[i], 1);
         printf("\n");
     }
 
-    printf("Tableau: ");
     for(int i = 0; i < 7; i++) {
         printf("Coluna %d: ", i);
         exibirLista(&mesa->tableau[i], 1);
