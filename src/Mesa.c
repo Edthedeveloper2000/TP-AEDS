@@ -167,10 +167,10 @@ void moverColunasDoTableau(Mesa *mesa, int quantidade, int indiceObtidas, int in
 
      Carta cartaBaixoTransferir = getCarta(&mesa->tableau[indiceObtidas], posicao);
      
-    //if(compararNaipesDiferentes(&cartaTopoReceber, &cartaBaixoTransferir)) {
+    if(compararNaipesDiferentes(&cartaTopoReceber, &cartaBaixoTransferir)) {
         transferirCartas(&mesa->tableau[indiceObtidas], &mesa->tableau[indiceReceber], quantidade);
         revelarCartaTableau(mesa,&mesa->tableau[indiceObtidas]);
-    //}
+    }
 }
 
 void revelarCartaTableau(Mesa *mesa, Lista *coluna) {
