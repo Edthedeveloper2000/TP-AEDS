@@ -29,6 +29,15 @@ Carta getCartaNoTopo(Lista *lista) {
     return lista->ultima->carta;
 }
 
+void getCartaNoTopoSeExistir(Lista *lista, Carta **carta) {
+    if (verificarListaVazia(lista)) {
+        *carta = NULL; // Modifica o ponteiro original para apontar para NULL
+    } else {
+        *carta = &(lista->ultima->carta); // Modifica o ponteiro original para apontar para a carta no topo
+    }
+}
+
+
 Carta getCarta(Lista *lista, int posicao) {
     int contador = 0;
     Celula *celulaAtual = lista->primeira->proxima;
