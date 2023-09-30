@@ -182,14 +182,31 @@ void moverBaseTableau(Mesa *mesa, int indiceBase, int indiceTableau) {
 }
 
 void moverColunasDoTableau(Mesa *mesa, int quantidade, int indiceObtidas, int indiceReceber){
-     Carta *cartaTopoReceber;
-     getCartaNoTopoSeExistir(&mesa->tableau[indiceReceber], &cartaTopoReceber);
+    
+    if(quantidade > getTamanho(&mesa->tableau[indiceObtidas]) || quantidade < 1) {
+        printf("Quantidade inválida\n");
+        return;
+    } else if((indiceObtidas > 6) || (indiceObtidas < 0)) {
+        printf("Coluna de origem inválida\n");
+        return;
+    } else if((indiceReceber > 6) || (indiceReceber < 0)) {
+        printf("Coluna de destino inválida\n");
+        return;
+    } 
+     
+    Carta *cartaTopoReceber;
+    getCartaNoTopoSeExistir(&mesa->tableau[indiceReceber], &cartaTopoReceber);
+
+    if(cartaTopoReceber == NULL) {
+        printf("Carta não encontrada");
+        return;
+    }
 
      // Posicao da carta mais abaixo na pilha que será transferida
-     int posicao =  getTamanho(&mesa->tableau[indiceObtidas]) - quantidade;
-
-     Carta cartaBaixoTransferir = getCarta(&mesa->tableau[indiceObtidas], posicao);
+    int posicao =  getTamanho(&mesa->tableau[indiceObtidas]) - quantidade;
      
+     Carta cartaBaixoTransferir = getCarta(&mesa->tableau[indiceObtidas], posicao);
+    
     if(compararNaipesDiferentes(cartaTopoReceber, &cartaBaixoTransferir)) {
         transferirCartas(&mesa->tableau[indiceObtidas], &mesa->tableau[indiceReceber], quantidade);
         revelarCartaTableau(mesa,&mesa->tableau[indiceObtidas]);
@@ -208,20 +225,20 @@ void revelarCartaTableau(Mesa *mesa, Lista *coluna) {
 void exibirMesa(Mesa *mesa) {
     printf("Pontuação atual: %d \n", getPontuacao(mesa) );
     printf("Baralho: ");
-    exibirLista(&mesa->baralho, 0);
+    exibirLista(&mesa->baralho, NENHUM);
     printf("\n");
     printf("Descarte: ");
-    exibirLista(&mesa->descarte, 1);
+    exibirLista(&mesa->descarte, TODOS);
     printf("\n");
     for(int i = 0; i < 4; i++) {
         printf("Base %d: ", i);
-        exibirLista(&mesa->bases[i], 1);
+        exibirLista(&mesa->bases[i], TODOS);
         printf("\n");
     }
 
     for(int i = 0; i < 7; i++) {
         printf("Coluna %d: ", i);
-        exibirLista(&mesa->tableau[i], 0);
+        exibirLista(&mesa->tableau[i], SOMENTE_TOPO);
         printf("\n");
     }
  

@@ -1,5 +1,11 @@
 #include "Carta.h"
 
+typedef enum {
+    SOMENTE_TOPO,
+    TODOS,
+    NENHUM
+} Visualizar;
+
 typedef struct Celula {
     Carta carta;
     struct Celula * proxima;
@@ -26,4 +32,4 @@ int retirarCartaDoTopo(Lista *lista, Carta *carta);
 void transferirCartas(Lista *lista1, Lista *lista2, int quantidade);
 void embaralhar(Lista *lista);
 
-void exibirLista(Lista* lista, int mostrarTodas);
+void exibirLista(Lista* lista, Visualizar mostrarTodas);
