@@ -16,6 +16,18 @@ void inicializarMesa(Mesa *mesa){
     }
 }
 
+int getPontuacao(Mesa *mesa) {
+    return mesa->pontuacao;
+}
+
+void setPontuacao(Mesa *mesa, int pontuacao) {
+    if(mesa->pontuacao + pontuacao < 0) {
+        mesa->pontuacao = 0;
+    } else {
+        mesa->pontuacao+=pontuacao;
+    }
+}
+
 void carregarBaralho(Mesa *mesa, Carta *cartas[], int tamanho) {
     for(int i = 0; i < tamanho; i++) {
         addCartaAoTopo(&mesa->baralho, cartas[i]);
@@ -70,7 +82,7 @@ void comprarCarta(Mesa *mesa) {
             retirarCartaDoTopo(&mesa->descarte, &cartaAux);
         }
 
-        mesa->pontuacao -= 50;
+    setPontuacao(mesa, -50);
     } else {
         transferirCartas(&mesa->baralho, &mesa->descarte, 1);
     }
@@ -103,8 +115,7 @@ void moverDescarteBase(Mesa *mesa) {
     getCartaNoTopoSeExistir(&mesa->bases[baseIndice], &cartaBase);
     if(compararNaipesIguais(cartaBase, &cartaDescarte)) {
         transferirCartas(&mesa->descarte, &mesa->bases[baseIndice], 1);
-        
-        mesa->pontuacao += 10;
+        setPontuacao(mesa, 10);
     } else {
         printf("Movimento inválido\n");
     }
@@ -119,7 +130,7 @@ void moverDescarteTableau(Mesa *mesa,int indice) {
     if(compararNaipesDiferentes( cartaTableau, cartaDescarte)) {
         transferirCartas(&mesa->descarte, &mesa->tableau[indice], 1);
         
-        mesa->pontuacao += 5;
+        setPontuacao(mesa, 5);
     } else {
         printf("Movimento inválido\n");
     }
@@ -153,7 +164,7 @@ void moverTableauBase(Mesa *mesa, int indice) {
     if(compararNaipesIguais(cartaBase, &cartaTableau)) {
         transferirCartas(&mesa->tableau[indice], &mesa->bases[baseIndice], 1);
 
-        mesa->pontuacao += 10;
+       setPontuacao(mesa, 10);
     }
     
     revelarCartaTableau(mesa, &mesa->tableau[indice]);
@@ -166,7 +177,7 @@ void moverBaseTableau(Mesa *mesa, int indiceBase, int indiceTableau) {
     if(compararNaipesDiferentes(&cartaTableau, &cartaBase)) {
         transferirCartas(&mesa->bases[indiceBase], &mesa->tableau[indiceTableau], 1);
 
-        mesa->pontuacao -= 15;
+        setPontuacao(mesa, -15);
     }
 }
 
@@ -190,12 +201,12 @@ void revelarCartaTableau(Mesa *mesa, Lista *coluna) {
     if(novaCartaNoTopo.posicao == BAIXO) {
         novaCartaNoTopo.posicao = CIMA;
         coluna->ultima->carta = novaCartaNoTopo;
-        mesa->pontuacao+=5;
+        setPontuacao(mesa, 5);
     }
 }
 
 void exibirMesa(Mesa *mesa) {
-    printf("Pontuação atual: %d \n", mesa->pontuacao );
+    printf("Pontuação atual: %d \n", getPontuacao(mesa) );
     printf("Baralho: ");
     exibirLista(&mesa->baralho, 0);
     printf("\n");
@@ -225,7 +236,7 @@ void verificarVitoria(Mesa* mesa){
             count++;
         }
     if(count == 4){
-        printf("Vitoria!!!\nPontuação Total: %d", mesa->pontuacao);
+        printf("Vitoria!!!\nPontuação Total: %d", getPontuacao(mesa));
         exit(0);
     }
     }
