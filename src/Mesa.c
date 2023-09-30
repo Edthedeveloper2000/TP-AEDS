@@ -41,7 +41,7 @@ void criarBaralho(Carta cartas[]){
                 break;
             }
             for(int j = 0; j <13; j++){
-                criarCarta(&(cartas[i*13 + (j)]), naipe, j+1, CIMA);
+                criarCarta(&(cartas[i*13 + (j)]), naipe, j+1, BAIXO);
             }
         }
 }
@@ -203,7 +203,7 @@ void revelarCartaTableau(Mesa *mesa, Lista *coluna) {
 void exibirMesa(Mesa *mesa) {
     printf("Pontuação atual: %d \n", mesa->pontuacao );
     printf("Baralho: ");
-    exibirLista(&mesa->baralho, 1);
+    exibirLista(&mesa->baralho, 0);
     printf("\n");
     printf("Descarte: ");
     exibirLista(&mesa->descarte, 1);
@@ -216,7 +216,7 @@ void exibirMesa(Mesa *mesa) {
 
     for(int i = 0; i < 7; i++) {
         printf("Coluna %d: ", i);
-        exibirLista(&mesa->tableau[i], 1);
+        exibirLista(&mesa->tableau[i], 0);
         printf("\n");
     }
  
