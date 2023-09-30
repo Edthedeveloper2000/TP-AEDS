@@ -90,11 +90,26 @@ void AcaoMoverEntreColunasDoTableau(Mesa *mesa) {
     printf("\nQuantas cartas deseja mover?\n");
     scanf("%d", &quantidade);
 
+    if(quantidade <= 0 || quantidade > 13){
+        printf("A Quantidade é inválida\n");
+        return;
+    }
+    
     printf("\nDe qual coluna?\n");
     scanf("%d", &colunaOrigem);
-
+    
+    if(colunaOrigem < 0 || colunaOrigem > 6){
+        printf("A coluna não existe\n");
+        return;  
+    }
     printf("\nPara qual coluna?\n");
     scanf("%d", &colunaDestino);
+
+    if(colunaDestino < 0 || colunaDestino > 6) {
+        printf("A coluna não existe\n");
+        return;
+    }
+
 
     moverColunasDoTableau(mesa, quantidade, colunaOrigem, colunaDestino);
 }
@@ -104,6 +119,11 @@ void AcaoMoverEntreColunasDoTableau(Mesa *mesa) {
 
     printf("\nDe qual coluna deseja mandar uma carta para a base?\n");
     scanf("%d", &indice);
+    
+    if(indice < 0 || indice >6) {
+        printf("A coluna não existe\n");
+        return;
+    }
 
     moverTableauBase(mesa, indice);
 }
@@ -114,8 +134,18 @@ void AcaoMoverDaBaseParaOTableau(Mesa *mesa) {
     printf("\nDe qual base deseja enviar uma carta?\n");
     scanf("%d", &indiceBase);
 
+    if(indiceBase < 0 || indiceBase > 3){
+        printf("A base não existe\n");
+        return;
+    }
+    
     printf("\nPara qual coluna do tableau?\n");
     scanf("%d", &indiceTableau);
+
+    if( indiceTableau < 0 || indiceTableau > 6){
+        printf("A coluna não existe\n");
+        return;
+    }
 
     moverBaseTableau(mesa, indiceBase, indiceTableau);
 }
@@ -125,6 +155,11 @@ void AcaoMoverDescarteParaTableau(Mesa *mesa) {
 
     printf("\nPara qual coluna deseja enviar uma carta?\n");
     scanf("%d", &indiceTableau);
+    
+    if(indiceTableau < 0 || indiceTableau > 6) {
+        printf("A coluna não existe\n");
+        return;
+    }
 
     moverDescarteTableau(mesa, indiceTableau);
 }

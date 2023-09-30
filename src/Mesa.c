@@ -173,7 +173,6 @@ void moverTableauBase(Mesa *mesa, int indice) {
 void moverBaseTableau(Mesa *mesa, int indiceBase, int indiceTableau) {
     Carta cartaTableau = getCartaNoTopo(&mesa->tableau[indiceTableau]);
     Carta cartaBase = getCartaNoTopo(&mesa->bases[indiceBase]);
-
     if(compararNaipesDiferentes(&cartaTableau, &cartaBase)) {
         transferirCartas(&mesa->bases[indiceBase], &mesa->tableau[indiceTableau], 1);
 
@@ -182,19 +181,12 @@ void moverBaseTableau(Mesa *mesa, int indiceBase, int indiceTableau) {
 }
 
 void moverColunasDoTableau(Mesa *mesa, int quantidade, int indiceObtidas, int indiceReceber){
-    if(quantidade < 1 || quantidade > 6){
-        printf("Quantidade de cartas invalidas");
-        return;
-    }
-
     Carta *cartaTopoReceber;
-    if(cartaTopoReceber < 0 || cartaTopoReceber > 6 || cartaTopoReceber == NULL) {
-        printf("Carta não encontrada");
+    if(cartaTopoReceber == NULL) {
+        printf("Carta não encontrada\n");
         return;
     }
     getCartaNoTopoSeExistir(&mesa->tableau[indiceReceber], &cartaTopoReceber);
-
-    
 
      // Posicao da carta mais abaixo na pilha que será transferida
     int posicao =  getTamanho(&mesa->tableau[indiceObtidas]) - quantidade;
@@ -247,7 +239,7 @@ void verificarVitoria(Mesa* mesa){
             count++;
         }
     if(count == 4){
-        printf("Vitoria!!!\nPontuação Total: %d", getPontuacao(mesa));
+        printf("\n\nVitoria!!!\nPontuação Total: %d\n\n", getPontuacao(mesa));
         exit(0);
     }
     }
