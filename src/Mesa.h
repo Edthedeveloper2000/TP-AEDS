@@ -8,6 +8,8 @@ typedef struct{
 }Mesa;
 
 void inicializarMesa(Mesa *mesa);
+int getPontuacao(Mesa *mesa);
+void setPontuacao(Mesa *mesa, int pontuacao);
 void carregarBaralho(Mesa *mesa, Carta *cartas[], int tamanho);
 void criarBaralho(Carta *cartas);
 void carregarBaralhoAleatorio(Mesa *mesa);
