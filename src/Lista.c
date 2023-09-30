@@ -171,19 +171,27 @@ void embaralhar(Lista *lista) {
 void exibirLista(Lista* lista, int mostrarTodas){
     if(verificarListaVazia(lista)){
         printf("Lista Vazia");
-    } else {
-        if(mostrarTodas) {
-            Celula* aux;
-            aux = lista->primeira->proxima;
-            while(aux != NULL){
-                Carta cartaAtual = aux->carta;
-                exibirCarta(&cartaAtual);
-                aux = aux->proxima;
+    } else{
+        if(mostrarTodas){
+           Celula* aux = lista->primeira->proxima;
+            while (aux != NULL){
+                    aux->carta.posicao = CIMA;
+                exibirCarta(aux);
+                aux = aux->proxima; 
             }
-            free(aux);
-        } else {
-            Carta carta = getCartaNoTopo(lista);
-            exibirCarta(&carta);
+            free(aux);       
+        }
+        // mostraTodas = 0, printa a ultima apenas; 
+        else{
+            Celula* aux = lista->primeira->proxima;
+            while (aux != NULL){
+                if(aux->proxima == NULL){
+                    aux->carta.posicao = CIMA;
+                }
+                exibirCarta(aux);
+                aux = aux->proxima; 
+            }
+            free(aux);       
         }
     }
 }
