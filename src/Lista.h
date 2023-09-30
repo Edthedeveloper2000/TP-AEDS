@@ -17,6 +17,7 @@ int verificarListaVazia(Lista *lista);
  
 
 Carta getCartaNoTopo(Lista *lista);
+void getCartaNoTopoSeExistir(Lista *lista, Carta ** carta);
 Carta getCarta(Lista *lista, int posicao);
 void addCartaAoTopo(Lista *lista, Carta *carta);
 void addCartaEmPosicaoQualquer(Lista *lista, Carta *carta, int posicao);

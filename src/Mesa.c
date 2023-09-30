@@ -100,12 +100,7 @@ void moverDescarteBase(Mesa *mesa) {
     
     Carta *cartaBase;
     
-    if(verificarListaVazia(&mesa->bases[baseIndice])) {
-        cartaBase = NULL;
-    } else {
-        *cartaBase = getCartaNoTopo(&mesa->bases[baseIndice]);
-    }
-    exibirCarta(&cartaBase);
+    getCartaNoTopoSeExistir(&mesa->bases[baseIndice], &cartaBase);
     if(compararNaipesIguais(cartaBase, &cartaDescarte)) {
         transferirCartas(&mesa->descarte, &mesa->bases[baseIndice], 1);
         
@@ -116,10 +111,12 @@ void moverDescarteBase(Mesa *mesa) {
 }
 
 void moverDescarteTableau(Mesa *mesa,int indice) {
-    Carta cartaDescarte = getCartaNoTopo(&mesa->descarte);
-    Carta cartaTableau = getCartaNoTopo(&mesa->tableau[indice]);
+    Carta *cartaDescarte;
+    getCartaNoTopoSeExistir(&mesa->descarte, &cartaDescarte);
+    Carta *cartaTableau;
+    getCartaNoTopoSeExistir(&mesa->tableau[indice], &cartaTableau);
     
-    if(compararNaipesDiferentes( &cartaTableau, &cartaDescarte)) {
+    if(compararNaipesDiferentes( cartaTableau, cartaDescarte)) {
         transferirCartas(&mesa->descarte, &mesa->tableau[indice], 1);
         
         mesa->pontuacao += 5;
@@ -151,11 +148,7 @@ void moverTableauBase(Mesa *mesa, int indice) {
     }
     
     Carta *cartaBase;
-    if(verificarListaVazia(&mesa->bases[baseIndice])) {
-        cartaBase = NULL;
-    } else {
-        *cartaBase = getCartaNoTopo(&mesa->bases[baseIndice]);
-    }
+    getCartaNoTopoSeExistir(&mesa->bases[baseIndice], &cartaBase);
 
     if(compararNaipesIguais(cartaBase, &cartaTableau)) {
         transferirCartas(&mesa->tableau[indice], &mesa->bases[baseIndice], 1);
@@ -178,14 +171,15 @@ void moverBaseTableau(Mesa *mesa, int indiceBase, int indiceTableau) {
 }
 
 void moverColunasDoTableau(Mesa *mesa, int quantidade, int indiceObtidas, int indiceReceber){
-     Carta cartaTopoReceber = getCartaNoTopo(&mesa->tableau[indiceReceber]);
+     Carta *cartaTopoReceber;
+     getCartaNoTopoSeExistir(&mesa->tableau[indiceReceber], &cartaTopoReceber);
 
      // Posicao da carta mais abaixo na pilha que será transferida
      int posicao =  getTamanho(&mesa->tableau[indiceObtidas]) - quantidade;
 
      Carta cartaBaixoTransferir = getCarta(&mesa->tableau[indiceObtidas], posicao);
      
-    if(compararNaipesDiferentes(&cartaTopoReceber, &cartaBaixoTransferir)) {
+    if(compararNaipesDiferentes(cartaTopoReceber, &cartaBaixoTransferir)) {
         transferirCartas(&mesa->tableau[indiceObtidas], &mesa->tableau[indiceReceber], quantidade);
         revelarCartaTableau(mesa,&mesa->tableau[indiceObtidas]);
     }
