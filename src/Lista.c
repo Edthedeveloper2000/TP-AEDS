@@ -195,7 +195,6 @@ void exibirLista(Lista* lista, int mostrarTodas){
         else{
             Celula* aux = lista->primeira->proxima;
             while (aux != NULL){
-                aux->carta.posicao = BAIXO;
                 if(aux->proxima == NULL){
                     aux->carta.posicao = CIMA;
                 }
