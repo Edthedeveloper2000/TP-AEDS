@@ -177,12 +177,12 @@ void embaralhar(Lista *lista) {
     }
 }
 
-void exibirLista(Lista* lista, int mostrarTodas){
+void exibirLista(Lista* lista, Visualizar visualizar){
     if(verificarListaVazia(lista)){
         printf("Lista Vazia");
     } else{
         // MostrarTodas = 1, printa todas para cima
-        if(mostrarTodas){
+        if(visualizar == TODOS){
            Celula* aux = lista->primeira->proxima;
             while (aux != NULL){
                     aux->carta.posicao = CIMA;
@@ -192,7 +192,7 @@ void exibirLista(Lista* lista, int mostrarTodas){
             free(aux);       
         }
         // mostraTodas = 0, printa a ultima apenas; 
-        else{
+        else if (visualizar == SOMENTE_TOPO){
             Celula* aux = lista->primeira->proxima;
             while (aux != NULL){
                 if(aux->proxima == NULL){
@@ -202,6 +202,14 @@ void exibirLista(Lista* lista, int mostrarTodas){
                 aux = aux->proxima; 
             }
             free(aux);       
+        } else {
+            Celula* aux = lista->primeira->proxima;
+            while (aux != NULL){
+                aux->carta.posicao = BAIXO;
+                exibirCarta(aux);
+                aux = aux->proxima; 
+            }
+            free(aux);  
         }
     }
 }
