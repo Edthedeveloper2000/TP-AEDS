@@ -171,30 +171,24 @@ void moverBaseTableau(Mesa *mesa, int indiceBase, int indiceTableau) {
 }
 
 void moverColunasDoTableau(Mesa *mesa, int quantidade, int indiceObtidas, int indiceReceber){
-    
-    if(quantidade > getTamanho(&mesa->tableau[indiceObtidas]) || quantidade < 1) {
-        printf("Quantidade inválida\n");
+    if(quantidade < 1 || quantidade > 6){
+        printf("Quantidade de cartas invalidas");
         return;
-    } else if((indiceObtidas > 6) || (indiceObtidas < 0)) {
-        printf("Coluna de origem inválida\n");
-        return;
-    } else if((indiceReceber > 6) || (indiceReceber < 0)) {
-        printf("Coluna de destino inválida\n");
-        return;
-    } 
-     
-    Carta *cartaTopoReceber;
-    getCartaNoTopoSeExistir(&mesa->tableau[indiceReceber], &cartaTopoReceber);
+    }
 
-    if(cartaTopoReceber == NULL) {
+    Carta *cartaTopoReceber;
+    if(cartaTopoReceber < 0 || cartaTopoReceber > 6 || cartaTopoReceber == NULL) {
         printf("Carta não encontrada");
         return;
     }
+    getCartaNoTopoSeExistir(&mesa->tableau[indiceReceber], &cartaTopoReceber);
+
+    
 
      // Posicao da carta mais abaixo na pilha que será transferida
     int posicao =  getTamanho(&mesa->tableau[indiceObtidas]) - quantidade;
      
-     Carta cartaBaixoTransferir = getCarta(&mesa->tableau[indiceObtidas], posicao);
+    Carta cartaBaixoTransferir = getCarta(&mesa->tableau[indiceObtidas], posicao);
     
     if(compararNaipesDiferentes(cartaTopoReceber, &cartaBaixoTransferir)) {
         transferirCartas(&mesa->tableau[indiceObtidas], &mesa->tableau[indiceReceber], quantidade);
