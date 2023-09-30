@@ -181,6 +181,7 @@ void exibirLista(Lista* lista, int mostrarTodas){
     if(verificarListaVazia(lista)){
         printf("Lista Vazia");
     } else{
+        // MostrarTodas = 1, printa todas para cima
         if(mostrarTodas){
            Celula* aux = lista->primeira->proxima;
             while (aux != NULL){
@@ -194,6 +195,7 @@ void exibirLista(Lista* lista, int mostrarTodas){
         else{
             Celula* aux = lista->primeira->proxima;
             while (aux != NULL){
+                aux->carta.posicao = BAIXO;
                 if(aux->proxima == NULL){
                     aux->carta.posicao = CIMA;
                 }
