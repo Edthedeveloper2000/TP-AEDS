@@ -28,9 +28,9 @@ void setPontuacao(Mesa *mesa, int pontuacao) {
     }
 }
 
-void carregarBaralho(Mesa *mesa, Carta *cartas[], int tamanho) {
+void carregarBaralho(Mesa *mesa, Carta cartas[], int tamanho) {
     for(int i = 0; i < tamanho; i++) {
-        addCartaAoTopo(&mesa->baralho, cartas[i]);
+        addCartaAoTopo(&mesa->baralho, &cartas[i]);
     }
 }
 
@@ -238,9 +238,13 @@ void verificarVitoria(Mesa* mesa){
         if(valorUltimaDaBase == 13){
             count++;
         }
-    if(count == 4){
-        printf("\n\nVitoria!!!\nPontuação Total: %d\n\n", getPontuacao(mesa));
-        exit(0);
-    }
+        if(count == 4){
+            printf("\n\nVitoria!!!\nPontuação Total: %d\n\n", getPontuacao(mesa));
+            printf("Mesa final:\n\n");
+            printf("\n-----------------------------------------------------\n");
+            exibirMesa(mesa);
+            printf("\n-----------------------------------------------------\n");
+            exit(0);
+        }
     }
 }
