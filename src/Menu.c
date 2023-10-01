@@ -1,6 +1,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "Menu.h"
+#include <string.h>
 
 void iniciar() {
     int escolha;
@@ -15,10 +16,10 @@ void iniciar() {
     switch (escolha)
     {
     case 1:
-        IniciarModoInterativo();
+        iniciarModoInterativo();
         break;
     case 2:
-        /* code */
+        iniciarModoArquivo();
         break;
     
     default:
@@ -27,7 +28,9 @@ void iniciar() {
 
 }
 
-void IniciarModoInterativo() {
+// MODO INTERATIVO:
+
+void iniciarModoInterativo() {
     printf("\nModo interativo! Escolha uma das opções abaixo! \n \n");
     Mesa mesa;
     int opcao;
@@ -57,13 +60,13 @@ void executarAcao(Mesa *mesa,  int opcao) {
     switch (opcao)
     {
     case 1:
-        AcaoMoverEntreColunasDoTableau(mesa);
+        acaoMoverEntreColunasDoTableau(mesa);
         break;
     case 2:
-        AcaoMoverDoTableauParaBase(mesa);
+        acaoMoverDoTableauParaBase(mesa);
         break;
     case 3:
-        AcaoMoverDaBaseParaOTableau(mesa);
+        acaoMoverDaBaseParaOTableau(mesa);
         break;
     case 4:
         comprarCarta(mesa);
@@ -72,7 +75,7 @@ void executarAcao(Mesa *mesa,  int opcao) {
         moverDescarteBase(mesa);
         break;
     case 6:
-        AcaoMoverDescarteParaTableau(mesa);
+        acaoMoverDescarteParaTableau(mesa);
         break;
     case 7:
         printf("\nObrigado por jogar conosco. Você ganhará na próxima\n");
@@ -84,7 +87,7 @@ void executarAcao(Mesa *mesa,  int opcao) {
     }
 }
 
-void AcaoMoverEntreColunasDoTableau(Mesa *mesa) {
+void acaoMoverEntreColunasDoTableau(Mesa *mesa) {
     int quantidade, colunaOrigem, colunaDestino;
 
     printf("\nQuantas cartas deseja mover?\n");
@@ -114,7 +117,7 @@ void AcaoMoverEntreColunasDoTableau(Mesa *mesa) {
     moverColunasDoTableau(mesa, quantidade, colunaOrigem, colunaDestino);
 }
 
- void AcaoMoverDoTableauParaBase(Mesa *mesa) {
+ void acaoMoverDoTableauParaBase(Mesa *mesa) {
     int indice;
 
     printf("\nDe qual coluna deseja mandar uma carta para a base?\n");
@@ -128,7 +131,7 @@ void AcaoMoverEntreColunasDoTableau(Mesa *mesa) {
     moverTableauBase(mesa, indice);
 }
 
-void AcaoMoverDaBaseParaOTableau(Mesa *mesa) {
+void acaoMoverDaBaseParaOTableau(Mesa *mesa) {
     int indiceBase, indiceTableau;
 
     printf("\nDe qual base deseja enviar uma carta?\n");
@@ -150,7 +153,7 @@ void AcaoMoverDaBaseParaOTableau(Mesa *mesa) {
     moverBaseTableau(mesa, indiceBase, indiceTableau);
 }
 
-void AcaoMoverDescarteParaTableau(Mesa *mesa) {
+void acaoMoverDescarteParaTableau(Mesa *mesa) {
     int indiceTableau;
 
     printf("\nPara qual coluna deseja enviar uma carta?\n");
@@ -162,4 +165,120 @@ void AcaoMoverDescarteParaTableau(Mesa *mesa) {
     }
 
     moverDescarteTableau(mesa, indiceTableau);
+}
+
+// MODO DE ARQUIVO:
+
+void iniciarModoArquivo() {
+    Mesa mesa;
+    char nomeArquivo[250];
+    FILE * arquivo;
+    int quantidadeCartas;
+    
+    inicializarMesa(&mesa);
+
+    printf("Informe o caminho do arquivo: \n");
+    scanf("%s", nomeArquivo);
+    
+    arquivo =  fopen(nomeArquivo,  "r");
+    if(arquivo == NULL){
+        printf("Falha ao iniciar o arquivo");
+        exit(1);
+    }
+
+    fscanf(arquivo,"%d", &quantidadeCartas);
+
+    if(quantidadeCartas >= 28 && quantidadeCartas <= 52){
+        Carta* cartas = malloc(quantidadeCartas * sizeof(Carta));
+        int tamanhoBaralho = quantidadeCartas - 28;
+        
+        for(int i = 0; i < tamanhoBaralho; i++){
+            Carta aux;
+            char naipe;
+            int valor;
+            fscanf(arquivo, " (%d %c) ", &valor, &naipe);
+            criarCarta(&aux, naipe, valor, CIMA);
+            cartas[i] = aux;
+        }
+        
+        carregarBaralho(&mesa, cartas, tamanhoBaralho);
+
+        for(int i = 6; i>=0; i--) {
+            Carta aux;
+            char naipe;
+            int valor;
+            for(int j =0; j<=i; j++) {
+                fscanf(arquivo, " (%d %c) ", &valor, &naipe);
+                criarCarta(&aux ,naipe, valor, CIMA);
+                addCartaAoTopo(&mesa.tableau[i], &aux);
+            }
+        }
+
+        printf("\n-----------------------------------------------------\n");
+        printf("\nInício\n");
+        exibirMesa(&mesa);
+        printf("\n-----------------------------------------------------\n");
+
+        char comando[3];
+        int quantidade;
+        int indiceTableuOrigem;
+        int indiceTableuDestino;
+        while (fscanf(arquivo, "%s", comando) == 1) {
+            if (strcmp(comando, "TB") == 0) {
+                fscanf(arquivo, " %d", &indiceTableuOrigem);
+                moverTableauBase(&mesa, indiceTableuOrigem);
+            
+            } else if (strcmp(comando, "BT") == 0) {
+                char naipe;
+                int indiceTableau;
+                fscanf(arquivo, " %c %d", &naipe, &indiceTableau );
+                int baseIndice;
+                 switch (naipe){
+                    case 'C':
+                        baseIndice = 0;
+                        break;
+                    case 'P' :
+                        baseIndice = 1;
+                        break;
+                    case 'O' :
+                        baseIndice = 2;
+                        break;
+                    case 'E' :
+                        baseIndice = 3;
+                        break;
+                    
+                    default:
+                        break;
+                    }
+
+                    moverBaseTableau(&mesa, baseIndice, indiceTableau);
+                    
+            } else if (strcmp(comando, "CC") == 0) {
+                comprarCarta(&mesa);
+            
+            } else if (strcmp(comando, "DB") == 0) {
+                moverDescarteBase(&mesa);
+            
+            } else if (strcmp(comando, "TT") == 0) {
+                fscanf(arquivo, " %d %d %d", &quantidade, &indiceTableuOrigem, &indiceTableuDestino);
+                moverColunasDoTableau(&mesa, quantidade, indiceTableuOrigem, indiceTableuDestino);
+            
+            } else if (strcmp(comando, "DT") == 0) {
+                fscanf(arquivo, " %d", &indiceTableuDestino);
+                moverDescarteTableau(&mesa, indiceTableuDestino);
+            }
+             else if (strcmp(comando, "X") == 0) {
+                printf("Encerrado");
+                exit(0);
+                break;
+            }
+           
+           verificarVitoria(&mesa);
+        }
+        free(cartas);
+    }else{
+        printf("\nQuantidade de Cartas inválidas");
+    }
+
+    fclose(arquivo);
 }
