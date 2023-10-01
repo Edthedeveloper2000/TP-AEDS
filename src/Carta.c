@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "Carta.h"
 
+// Cria a Carta com o Naipe e Valor passados
 void criarCarta(Carta *carta, char naipe, int valor, Posicao posicao) {
     carta->naipe = naipe;
     carta->posicao = posicao;
@@ -19,10 +20,15 @@ Posicao getPosicao(Carta *carta) {
     return carta->posicao;
 }
 
+// Altera a Posição  da carta, se CIMA vira BAIXO, se BAIXO vira CIMA 
 void setPosicao(Carta *carta) {
     carta->posicao = !carta->posicao;
 }
 
+/**
+ * Compara duas cartas, verificando se possuem o mesmo naipe
+ * e se a segunda é a próxima em valor em relação a primeira
+*/
 int compararNaipesIguais(Carta *cartaAtual, Carta *proximaCarta) {
     if(cartaAtual == NULL) {
         if(proximaCarta->valor==1){
@@ -39,6 +45,11 @@ int compararNaipesIguais(Carta *cartaAtual, Carta *proximaCarta) {
     return 0;
 } 
 
+
+/**
+ * Compara a carta ao topo da coluna destino com a carta mais abaixo da pilha que será movida
+ * para verificar se atendem a uma sequencia descrescente em valor e alternada em naipe.
+*/
 int compararNaipesDiferentes( Carta *cartaAtual, Carta *proximaCarta){
     if(cartaAtual == NULL) {
         if(proximaCarta->valor == 13){
@@ -63,6 +74,8 @@ int compararNaipesDiferentes( Carta *cartaAtual, Carta *proximaCarta){
     }
     return 0;
 }
+
+// Exibe a carta na tela com seu respectivo Valor, Naipe e Posiçao
 void exibirCarta(Carta *carta) {
     if(carta->posicao == CIMA) { 
         switch (carta->naipe){

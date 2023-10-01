@@ -3,6 +3,9 @@
 #include "Menu.h"
 #include <string.h>
 
+/**
+ * Exibe o menu inicial de escolha entre movo interativo e leitura de arquivo
+*/
 void iniciar() {
     int escolha;
 
@@ -30,6 +33,13 @@ void iniciar() {
 
 // MODO INTERATIVO:
 
+
+/**
+ * Exibe o menu de opções e executa a ação correspondente
+ * solicitada pelo usuário.
+ * 
+ * Verifica a condição de vitória após cada ação.
+*/
 void iniciarModoInterativo() {
     printf("\nModo interativo! Escolha uma das opções abaixo! \n \n");
     Mesa mesa;
@@ -56,6 +66,7 @@ void iniciarModoInterativo() {
     } while (opcao != 7);
 }
 
+// Executa a ação que o Jogador exigir
 void executarAcao(Mesa *mesa,  int opcao) {
     switch (opcao)
     {
@@ -87,6 +98,10 @@ void executarAcao(Mesa *mesa,  int opcao) {
     }
 }
 
+/**
+* Move um numero de cartas entre os tableus
+* sendo passado a quantidade e as colunas das cartas que serão movidas
+**/
 void acaoMoverEntreColunasDoTableau(Mesa *mesa) {
     int quantidade, colunaOrigem, colunaDestino;
 
@@ -117,6 +132,10 @@ void acaoMoverEntreColunasDoTableau(Mesa *mesa) {
     moverColunasDoTableau(mesa, quantidade, colunaOrigem, colunaDestino);
 }
 
+/**
+ * Move uma carta do tableau para a base correspondente
+ * se o movimento for válido
+*/
  void acaoMoverDoTableauParaBase(Mesa *mesa) {
     int indice;
 
@@ -130,7 +149,10 @@ void acaoMoverEntreColunasDoTableau(Mesa *mesa) {
 
     moverTableauBase(mesa, indice);
 }
-
+/**
+* Move a Carta da Base para o Tableaus
+* sendo passados de qual base sairá a carte e para qual tableau será transferida
+**/
 void acaoMoverDaBaseParaOTableau(Mesa *mesa) {
     int indiceBase, indiceTableau;
 
@@ -153,6 +175,12 @@ void acaoMoverDaBaseParaOTableau(Mesa *mesa) {
     moverBaseTableau(mesa, indiceBase, indiceTableau);
 }
 
+
+/**
+ * Move uma carta do descarte para a coluna
+ * do tableau que o usuário especificar,
+ * se o movimento for válido.
+*/
 void acaoMoverDescarteParaTableau(Mesa *mesa) {
     int indiceTableau;
 
@@ -169,6 +197,13 @@ void acaoMoverDescarteParaTableau(Mesa *mesa) {
 
 // MODO DE ARQUIVO:
 
+
+/**
+ * Executa a leitura de um arquivo de entrada
+ * com a quantidade de cartas, cada carta e as operações
+ * que o usuário informar e monta um baralho para aplicar essas operações
+ * informando quando e se o usuário vencer.
+*/
 void iniciarModoArquivo() {
     Mesa mesa;
     char nomeArquivo[250];
@@ -181,6 +216,7 @@ void iniciarModoArquivo() {
     scanf("%s", nomeArquivo);
     
     arquivo =  fopen(nomeArquivo,  "r");
+    // verifica se o arquivo foi aberto com sucesso
     if(arquivo == NULL){
         printf("Falha ao iniciar o arquivo");
         exit(1);
@@ -189,9 +225,11 @@ void iniciarModoArquivo() {
     fscanf(arquivo,"%d", &quantidadeCartas);
 
     if(quantidadeCartas >= 28 && quantidadeCartas <= 52){
+        // Aloca espaço para montar um baralho de acordo a quantidade de cartas passada
         Carta* cartas = malloc(quantidadeCartas * sizeof(Carta));
         int tamanhoBaralho = quantidadeCartas - 28;
         
+        // monta um vetor com as cartas informadas pelo usuário
         for(int i = 0; i < tamanhoBaralho; i++){
             Carta aux;
             char naipe;
@@ -201,6 +239,7 @@ void iniciarModoArquivo() {
             cartas[i] = aux;
         }
         
+        // Cria um baralho na mesa com as cartas passadas
         carregarBaralho(&mesa, cartas, tamanhoBaralho);
 
         for(int i = 6; i>=0; i--) {
@@ -229,7 +268,9 @@ void iniciarModoArquivo() {
                 indiceTableuOrigem -= 1;
                 moverTableauBase(&mesa, indiceTableuOrigem);
             
-            } else if (strcmp(comando, "BT") == 0) {
+            } 
+            // Chama a função de Mover da Base para o Tableau 
+            else if (strcmp(comando, "BT") == 0) {
                 char naipe;
                 int indiceTableau;
                 fscanf(arquivo, " %c %d", &naipe, &indiceTableau );
@@ -254,23 +295,29 @@ void iniciarModoArquivo() {
 
                     moverBaseTableau(&mesa, baseIndice, indiceTableau);
                     
-            } else if (strcmp(comando, "CC") == 0) {
+            } 
+            // Chama a função de comparar Carta do Baralho para o Descarte
+            else if (strcmp(comando, "CC") == 0) {
                 comprarCarta(&mesa);
             
-            } else if (strcmp(comando, "DB") == 0) {
+            }
+            //  Chama a função de mover carta do Descarte para a Base
+             else if (strcmp(comando, "DB") == 0) {
                 moverDescarteBase(&mesa);
             
-            } else if (strcmp(comando, "TT") == 0) {
+            } //  Chmaa função de Mover Cartas entre os Tableaus
+            else if (strcmp(comando, "TT") == 0) {
                 fscanf(arquivo, " %d %d %d", &quantidade, &indiceTableuOrigem, &indiceTableuDestino);
                 indiceTableuOrigem -= 1;
                 indiceTableuDestino -= 1;
                 moverColunasDoTableau(&mesa, quantidade, indiceTableuOrigem, indiceTableuDestino);
-            
-            } else if (strcmp(comando, "DT") == 0) {
+            }// Chama a função de mover do Descarte para o Tableaua
+            else if (strcmp(comando, "DT") == 0) {
                 fscanf(arquivo, " %d", &indiceTableuDestino);
                 indiceTableuDestino -= 1;
                 moverDescarteTableau(&mesa, indiceTableuDestino);
             }
+            // Finaliza o jogo
              else if (strcmp(comando, "X") == 0) {
                 printf("Encerrado");
                 exit(0);
@@ -283,6 +330,5 @@ void iniciarModoArquivo() {
     }else{
         printf("\nQuantidade de Cartas inválidas");
     }
-
     fclose(arquivo);
 }

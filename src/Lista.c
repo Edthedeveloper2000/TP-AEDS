@@ -3,6 +3,9 @@
 #include <stdio.h>
 #include <time.h>
 
+/**
+ * Gera uma lista encadeada com cabeça, vazia
+*/
 void criarLista(Lista *lista){
     lista->primeira = (Celula*) malloc(sizeof(Celula));
     lista->ultima = lista->primeira;
@@ -37,7 +40,7 @@ void getCartaNoTopoSeExistir(Lista *lista, Carta **carta) {
     }
 }
 
-
+// Obtem a carta presente em uma posição qualquer da lista
 Carta getCarta(Lista *lista, int posicao) {
     int contador = 0;
     Celula *celulaAtual = lista->primeira->proxima;
@@ -49,6 +52,9 @@ Carta getCarta(Lista *lista, int posicao) {
     return celulaAtual->carta;
 }
 
+/**
+ * Obtem a célula numa dada posição
+*/
 Celula * getCelula(Lista *lista, int posicao) {
     int contador = 0;
     Celula *celulaAtual = lista->primeira->proxima;
@@ -59,7 +65,7 @@ Celula * getCelula(Lista *lista, int posicao) {
 
     return celulaAtual;
 }
-
+// Adiciona uma carta no Topo do baralho (Fim da lista)
 void addCartaAoTopo(Lista *lista, Carta *carta) {
     lista->ultima->proxima = (Celula *) malloc(sizeof(Celula));
     lista->ultima = lista->ultima->proxima;
@@ -67,6 +73,7 @@ void addCartaAoTopo(Lista *lista, Carta *carta) {
     lista->ultima->proxima = NULL;
 }
 
+// Adiciona uma Carta em uma Posição qualquer na lista
 void addCartaEmPosicaoQualquer(Lista *lista, Carta *carta, int posicao) {
     Celula *atual = lista->primeira->proxima;
     Celula *aux = atual;
@@ -89,7 +96,7 @@ void addCartaEmPosicaoQualquer(Lista *lista, Carta *carta, int posicao) {
 
     free(aux);
 }
-
+// Remove a ultima carta da lista
 int retirarCartaDoTopo(Lista *lista, Carta *carta) {
     Celula *ultimaCelula = lista->primeira->proxima;
     Celula *penultimaCelula = lista->primeira;
@@ -112,13 +119,22 @@ int retirarCartaDoTopo(Lista *lista, Carta *carta) {
     return 1;
 }
 
+/**
+ * Transfere uma quantidade dada de cartas da lista 1 para a lista 2
+ * preserb=vando a ordem dos elementos
+*/
 void transferirCartas(Lista* listaOrigem, Lista* listaDestino, int quantidade) {
     int tamanhoOrigem = (getTamanho(listaOrigem) + 1);
-
+    // Verificação para ver se a quantidade de cartas a serem tranferidas é válida
     if ((quantidade > (tamanhoOrigem - 1)) || quantidade <= 0) {
         printf("Quantidade inválida de cartas para mover.\n");
         return;
     }
+    
+    /**
+    * Percorre a lista até chegar na primeira carta a ser transferida para a a lista de destino
+    * e armazena a posição anterior da primeira que será transferida
+    **/
     int posicaoPrimeiraCarta = tamanhoOrigem - quantidade;
     Celula* anterior = NULL;
     Celula* atual = listaOrigem->primeira;
@@ -127,6 +143,10 @@ void transferirCartas(Lista* listaOrigem, Lista* listaDestino, int quantidade) {
         atual = atual->proxima;
     }
 
+    /**
+    * Percorre a lista de origem adicionando item por item na lista de destino
+    * começa pela carta obtida pela variavel "atual"
+    **/
     for (int i = 0; i < quantidade; i++) {
         if(atual == NULL){
             break;
@@ -146,6 +166,7 @@ void transferirCartas(Lista* listaOrigem, Lista* listaDestino, int quantidade) {
 
     listaOrigem->ultima = (anterior != NULL) ? anterior : listaOrigem->primeira->proxima;
 
+    // Verifica se a lista de Origem ficou vazia após a transferencia
     if(verificarListaVazia(listaOrigem)) {
         listaOrigem->primeira->proxima = NULL;
         listaOrigem->ultima->proxima = NULL;
@@ -153,12 +174,16 @@ void transferirCartas(Lista* listaOrigem, Lista* listaDestino, int quantidade) {
 }
 
 
+/**
+ * Embaralha uma lista percorrendo cada elemento e trocando
+ * o conteúdo de sua célula com o de outra cuja posição é 
+ * gerada aleatoriamente.
+*/
 void embaralhar(Lista *lista) {
     int cont;
     int tamanho = getTamanho(lista);
 
     if (tamanho <= 1) {
-        // Não é necessário embaralhar uma lista com 0 ou 1 elemento
         return;
     }
 
@@ -177,11 +202,17 @@ void embaralhar(Lista *lista) {
     }
 }
 
+/**
+ * Exibe a lista em três tipos de visualização
+ * @param Visualizar visualizar:
+ * - SOMENTE_TOPO: mostra todas para baixo, exceto a do topo
+ * - TODOS: mostra todas para cima
+ * - NENHUM: mostra todas para baixo
+*/
 void exibirLista(Lista* lista, Visualizar visualizar){
     if(verificarListaVazia(lista)){
         printf("Lista Vazia");
     } else{
-        // MostrarTodas = 1, printa todas para cima
         if(visualizar == TODOS){
            Celula* aux = lista->primeira->proxima;
             while (aux != NULL){
@@ -190,8 +221,7 @@ void exibirLista(Lista* lista, Visualizar visualizar){
                 aux = aux->proxima; 
             }
             free(aux);       
-        }
-        // mostraTodas = 0, printa a ultima apenas; 
+        } 
         else if (visualizar == SOMENTE_TOPO){
             Celula* aux = lista->primeira->proxima;
             while (aux != NULL){

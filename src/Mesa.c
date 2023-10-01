@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "Mesa.h"
 
+/**
+ * Cria uma mesa com todas as listas vazias
+*/
 void inicializarMesa(Mesa *mesa){
     mesa->pontuacao = 0;
     criarLista(&mesa->baralho);
@@ -28,12 +31,20 @@ void setPontuacao(Mesa *mesa, int pontuacao) {
     }
 }
 
+/**
+ * Recebe um vetor e um tamanho para uma quantidade de cartas
+ * E adiciona essas cartas ao baralho, preservando a ordem inicial
+*/
 void carregarBaralho(Mesa *mesa, Carta cartas[], int tamanho) {
     for(int i = 0; i < tamanho; i++) {
         addCartaAoTopo(&mesa->baralho, &cartas[i]);
     }
 }
 
+/**
+ * Gera cada uma das 52 cartas do Paciência
+ * e salva no vetor passado
+*/
 void criarBaralho(Carta cartas[]){
     char naipe;
     for (int i = 0; i<4; i++){
@@ -57,6 +68,10 @@ void criarBaralho(Carta cartas[]){
             }
         }
 }
+
+/**
+ * Cria um baralho de 52 cartas e o embaralha
+*/
 void carregarBaralhoAleatorio(Mesa *mesa) {
     Carta cartas[52];
     criarBaralho(cartas);
@@ -66,13 +81,20 @@ void carregarBaralhoAleatorio(Mesa *mesa) {
     embaralhar(&mesa->baralho);
 }
 
+/**
+ * Monta as colunas do tableau, colocando i+1 cartas
+ * de acordo com o número da coluna
+*/
 void preparar(Mesa *mesa) {
     for (int i = 0; i < 7; i++) {
         transferirCartas(&mesa->baralho, &mesa->tableau[i], i + 1);
     }
 }
 
-
+/**
+* Move a carta do Topo do baralho (final da lista) para o Descarte
+* alterando a Posição que se encontra essa carta
+**/
 void comprarCarta(Mesa *mesa) {
    if(getTamanho(&mesa->baralho) == 0){
         int tamanho = getTamanho(&mesa->descarte);
@@ -88,6 +110,10 @@ void comprarCarta(Mesa *mesa) {
     }
 }
 
+/**
+ * identifica o naipe da carta ao topo do descarte
+ * e adiciona na base correspondente se existir
+*/
 void moverDescarteBase(Mesa *mesa) {
     Carta cartaDescarte = getCartaNoTopo(&mesa->descarte);
     int baseIndice;
@@ -121,6 +147,11 @@ void moverDescarteBase(Mesa *mesa) {
     }
 }
 
+/**
+ * Se as cartas puderem formar uma sequencia decrescente
+ * em valor, e alternada em naipe, transfere a ultima carta
+ * do baralho, para a coluna do tableau informada.
+*/
 void moverDescarteTableau(Mesa *mesa,int indice) {
     Carta *cartaDescarte;
     getCartaNoTopoSeExistir(&mesa->descarte, &cartaDescarte);
@@ -136,6 +167,9 @@ void moverDescarteTableau(Mesa *mesa,int indice) {
     }
 }
 
+/***
+* Move a carta do Tableu para a Base, no caso cada indice da base representa um naipe
+**/
 void moverTableauBase(Mesa *mesa, int indice) {
     Carta cartaTableau = getCartaNoTopo(&mesa->tableau[indice]);
     int baseIndice;
@@ -169,7 +203,9 @@ void moverTableauBase(Mesa *mesa, int indice) {
     
     revelarCartaTableau(mesa, &mesa->tableau[indice]);
 }
-
+/**
+*   Move a cara do topo(ultima da lista) da base para um tableau
+**/
 void moverBaseTableau(Mesa *mesa, int indiceBase, int indiceTableau) {
     Carta cartaTableau = getCartaNoTopo(&mesa->tableau[indiceTableau]);
     Carta cartaBase = getCartaNoTopo(&mesa->bases[indiceBase]);
@@ -180,6 +216,11 @@ void moverBaseTableau(Mesa *mesa, int indiceBase, int indiceTableau) {
     }
 }
 
+/**
+ * Se as cartas puderem formar uma sequência alternada em naipe e
+ * decrescente em valor, move a quantidade indicada de items de uma coluna 
+ * para a outra.
+*/
 void moverColunasDoTableau(Mesa *mesa, int quantidade, int indiceObtidas, int indiceReceber){
     Carta *cartaTopoReceber;
     if(cartaTopoReceber == NULL) {
@@ -199,6 +240,10 @@ void moverColunasDoTableau(Mesa *mesa, int quantidade, int indiceObtidas, int in
     }
 }
 
+/**
+ * Executa o movimento de virar a nova carta ao topo
+ * de uma coluna para cima.
+*/
 void revelarCartaTableau(Mesa *mesa, Lista *coluna) {
     Carta novaCartaNoTopo = getCartaNoTopo(coluna);
     if(novaCartaNoTopo.posicao == BAIXO) {
@@ -207,7 +252,9 @@ void revelarCartaTableau(Mesa *mesa, Lista *coluna) {
         setPontuacao(mesa, 5);
     }
 }
-
+/**
+* Exibe a Mesa do jogo com as respectivas cartas e listas
+**/
 void exibirMesa(Mesa *mesa) {
     printf("Pontuação atual: %d \n", getPontuacao(mesa) );
     printf("Baralho: ");
@@ -230,6 +277,10 @@ void exibirMesa(Mesa *mesa) {
  
 }
 
+/**
+ * Finaliza o jogo e exibe o resultado final
+ * se cada base estiver completa.
+*/
 void verificarVitoria(Mesa* mesa){
     int count = 0;
     for (int i = 0; i < 4 ; i++){
