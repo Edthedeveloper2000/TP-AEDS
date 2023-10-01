@@ -100,14 +100,14 @@ void acaoMoverEntreColunasDoTableau(Mesa *mesa) {
     
     printf("\nDe qual coluna?\n");
     scanf("%d", &colunaOrigem);
-    
+    colunaOrigem -= 1;
     if(colunaOrigem < 0 || colunaOrigem > 6){
         printf("A coluna não existe\n");
         return;  
     }
     printf("\nPara qual coluna?\n");
     scanf("%d", &colunaDestino);
-
+    colunaDestino -= 1;
     if(colunaDestino < 0 || colunaDestino > 6) {
         printf("A coluna não existe\n");
         return;
@@ -122,7 +122,7 @@ void acaoMoverEntreColunasDoTableau(Mesa *mesa) {
 
     printf("\nDe qual coluna deseja mandar uma carta para a base?\n");
     scanf("%d", &indice);
-    
+    indice -= 1;
     if(indice < 0 || indice >6) {
         printf("A coluna não existe\n");
         return;
@@ -136,7 +136,7 @@ void acaoMoverDaBaseParaOTableau(Mesa *mesa) {
 
     printf("\nDe qual base deseja enviar uma carta?\n");
     scanf("%d", &indiceBase);
-
+    indiceBase -= 1;
     if(indiceBase < 0 || indiceBase > 3){
         printf("A base não existe\n");
         return;
@@ -144,7 +144,7 @@ void acaoMoverDaBaseParaOTableau(Mesa *mesa) {
     
     printf("\nPara qual coluna do tableau?\n");
     scanf("%d", &indiceTableau);
-
+    indiceTableau -= 1;
     if( indiceTableau < 0 || indiceTableau > 6){
         printf("A coluna não existe\n");
         return;
@@ -158,7 +158,7 @@ void acaoMoverDescarteParaTableau(Mesa *mesa) {
 
     printf("\nPara qual coluna deseja enviar uma carta?\n");
     scanf("%d", &indiceTableau);
-    
+    indiceTableau -= 1;
     if(indiceTableau < 0 || indiceTableau > 6) {
         printf("A coluna não existe\n");
         return;
@@ -226,6 +226,7 @@ void iniciarModoArquivo() {
         while (fscanf(arquivo, "%s", comando) == 1) {
             if (strcmp(comando, "TB") == 0) {
                 fscanf(arquivo, " %d", &indiceTableuOrigem);
+                indiceTableuOrigem -= 1;
                 moverTableauBase(&mesa, indiceTableuOrigem);
             
             } else if (strcmp(comando, "BT") == 0) {
@@ -261,10 +262,13 @@ void iniciarModoArquivo() {
             
             } else if (strcmp(comando, "TT") == 0) {
                 fscanf(arquivo, " %d %d %d", &quantidade, &indiceTableuOrigem, &indiceTableuDestino);
+                indiceTableuOrigem -= 1;
+                indiceTableuDestino -= 1;
                 moverColunasDoTableau(&mesa, quantidade, indiceTableuOrigem, indiceTableuDestino);
             
             } else if (strcmp(comando, "DT") == 0) {
                 fscanf(arquivo, " %d", &indiceTableuDestino);
+                indiceTableuDestino -= 1;
                 moverDescarteTableau(&mesa, indiceTableuDestino);
             }
              else if (strcmp(comando, "X") == 0) {

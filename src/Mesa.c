@@ -217,13 +217,13 @@ void exibirMesa(Mesa *mesa) {
     exibirLista(&mesa->descarte, TODOS);
     printf("\n");
     for(int i = 0; i < 4; i++) {
-        printf("Base %d: ", i);
+        printf("Base %d: ", i+1);
         exibirLista(&mesa->bases[i], TODOS);
         printf("\n");
     }
 
     for(int i = 0; i < 7; i++) {
-        printf("Coluna %d: ", i);
+        printf("Coluna %d: ", i+1);
         exibirLista(&mesa->tableau[i], SOMENTE_TOPO);
         printf("\n");
     }
