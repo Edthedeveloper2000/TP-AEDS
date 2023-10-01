@@ -68,22 +68,22 @@ void exibirCarta(Carta *carta) {
         switch (carta->naipe){
         case 'C':
             printf("\033[1;31m");
-            printf("[C %d]", carta->valor);
+            printf("[♥ %d]", carta->valor);
             break;
 
         case 'P' :
             printf("\033[90m");
-            printf("[P %d]", carta->valor);
+            printf("[♣ %d]", carta->valor);
             break;
             
         case 'E' :
             printf("\033[90m");
-            printf("[E %d]", carta->valor);
+            printf("[♠ %d]", carta->valor);
             break;
 
         case 'O' :
             printf("\033[1;31m");
-            printf("[O %d]", carta->valor);
+            printf("[♦ %d]", carta->valor);
             break;
             
         default:
